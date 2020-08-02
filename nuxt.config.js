@@ -19,9 +19,6 @@ export default {
   ** Headers of the page
   ** See https://nuxtjs.org/api/configuration-head
   */
-  env: {
-    baseUrl: process.env.BASE_URL || 'http://localhost:8888'
-  },
   head: {
     title: siteName,
     titleTemplate: `%s - ${siteName}`,

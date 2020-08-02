@@ -49,7 +49,7 @@ const defaultUser = {
   }
 }
 
-const baseUrl = process.env.baseUrl
+const baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:8888' : process.env.URL
 const netlifyFunctionsBaseUrl = process.env.NETLIFY_FUNCTIONS_BASE_URL
 
 const netlifyFunction = async (name, httpMethod = 'GET') => {
