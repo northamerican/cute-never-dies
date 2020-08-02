@@ -1,62 +1,52 @@
 <template>
-  <div>
+  <div id="app">
+    <site-navbar class="is-light" />
     <Nuxt />
+    <site-footer />
+    <sku-modal />
   </div>
 </template>
 
-<style>
-html {
-  font-family:
-    'Source Sans Pro',
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    'Helvetica Neue',
-    Arial,
-    sans-serif;
-  font-size: 16px;
-  word-spacing: 1px;
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  box-sizing: border-box;
-}
+<script>
+import { mapMutations } from 'vuex'
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
+export default {
+  mounted () {
+    window.onpopstate = () => this.dismissModals()
+  },
+  methods: {
+    ...mapMutations([
+      'dismissModals'
+    ])
+  }
 }
+</script>
 
-.button--green {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #3b8070;
-  color: #3b8070;
-  text-decoration: none;
-  padding: 10px 30px;
-}
+<style lang="sass">
+  html, body
+    font-family: "Rubik" //, $family-sans-serif
+    overflow-x: hidden
 
-.button--green:hover {
-  color: #fff;
-  background-color: #3b8070;
-}
+  #app
+    display: flex
+    flex-direction: column
+    // height: 100vh // https://github.com/nuxt/nuxt.js/issues/196
 
-.button--grey {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #35495e;
-  color: #35495e;
-  text-decoration: none;
-  padding: 10px 30px;
-  margin-left: 15px;
-}
+  .is-text-transform-none,
+  .__nuxt-error-page
+    text-transform: none
 
-.button--grey:hover {
-  color: #fff;
-  background-color: #35495e;
-}
+  .nuxt-progress
+    //? https://github.com/nuxt/nuxt.js/pull/3891
+    // seems none of nuxt-progress's styles are loading
+    position: fixed
+
+  main
+    flex-grow: 1
+    margin-top: 0
+    // +tablet
+    //   margin-top: $navbar-height
+
+  .hero-body--hero-image img
+    width: 100%
 </style>

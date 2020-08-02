@@ -1,3 +1,8 @@
+import shopConfig from './shop.public.config.js'
+import en from './locales/en.json'
+// import fr from './locales/fr.json'
+
+const { siteName } = shopConfig
 
 export default {
   /*
@@ -14,8 +19,18 @@ export default {
   ** Headers of the page
   ** See https://nuxtjs.org/api/configuration-head
   */
+  env: {
+    baseUrl: process.env.BASE_URL || 'http://localhost:8888'
+  },
   head: {
-    title: process.env.npm_package_name || '',
+    title: siteName,
+    titleTemplate: `%s - ${siteName}`,
+    htmlAttrs: {
+      lang: () => this.i18n.locale
+    },
+    script: [
+      { src: 'https://js.stripe.com/v3/', defer: true }
+    ],
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -25,11 +40,7 @@ export default {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
-  /*
-  ** Global CSS
-  */
-  css: [
-  ],
+
   /*
   ** Plugins to load before mounting the App
   ** https://nuxtjs.org/guide/plugins
@@ -52,8 +63,38 @@ export default {
   ** Nuxt.js modules
   */
   modules: [
-    // Doc: https://github.com/nuxt-community/modules/tree/master/packages/bulma
-    '@nuxtjs/bulma'
+    ['nuxt-i18n', {
+      injectAs: 'i18n',
+      locales: [
+        {
+          code: 'en',
+          iso: 'en-US',
+          name: 'English'
+        }
+        // {
+        //   code: 'fr',
+        //   iso: 'fr-CA',
+        //   name: 'français'
+        // }
+      ],
+      vueI18n: {
+        messages: {
+          en
+          // fr
+        },
+        fallbackLocale: 'en',
+        silentTranslationWarn: true
+      },
+      defaultLocale: 'en',
+      noPrefixDefaultLocale: true
+    }]
+  ],
+
+  styleResources: {
+    sass: './assets/sass/variables.sass'
+  },
+  css: [
+    '~/assets/sass/bulma.sass'
   ],
   /*
   ** Build configuration

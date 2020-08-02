@@ -1,0 +1,12 @@
+$weight-semibold: 500 // 600 !default
+$primary: #ed0064
+$link: $primary
+
+
+// these vars are in bulma. if i include bulma, it'll load several times which is no good.
+// if i don't include these vars here, they are not read in the app, cause they are in bulma.sass, not utilities/_all
+$navbar-height: 3.25rem //!default
+$modal-content-spacing-mobile: 160px //!default
+$modal-content-spacing-tablet: 40px //!default
+
+@import "~bulma/sass/utilities/_all"
