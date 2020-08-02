@@ -49,8 +49,9 @@ const defaultUser = {
   }
 }
 
-const baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:8888' : process.env.URL
-console.log('process.env.URL', process.env.URL)
+const baseUrl = process.env.NETLIFY_DEV ? 'http://localhost:8888' : process.env.URL
+console.log('aaa ' + JSON.stringify(process.env))
+console.log('aaa env url ' + process.env.URL)
 const netlifyFunctionsBaseUrl = process.env.NETLIFY_FUNCTIONS_BASE_URL
 
 const netlifyFunction = async (name, httpMethod = 'GET') => {

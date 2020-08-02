@@ -1,5 +1,5 @@
 <template>
-  <no-ssr>
+  <client-only>
     <div>
       <div v-if="currencyDropdown" class="dropdown is-hoverable">
         <div class="dropdown-trigger">
@@ -23,7 +23,7 @@
 
       <span>{{ basePrice(price) }}<span v-if="showBaseCurrency"> ({{ baseCurrency }})</span></span>
     </div>
-  </no-ssr>
+  </client-only>
 </template>
 
 <script>
