@@ -14,8 +14,7 @@ exports.handler = ({ body }, context, callback) => {
       statusCode: 200,
       body: JSON.stringify(productImages),
       headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, POST, PUT'
+        'Access-Control-Allow-Origin': '*'
       }
     })
   })

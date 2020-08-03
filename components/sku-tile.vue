@@ -5,7 +5,6 @@
         <!-- <a :href="`/shop/${sku.id}`" @click.prevent="openSkuModal(sku)"> -->
         <a :href="`/shop/${sku.id}`">
           <img-responsive
-            v-if="images[0]"
             :src="images[0]"
             :alt="sku.id"
           />
@@ -43,6 +42,7 @@
 </template>
 
 <script>
+/* eslint-disable no-console */
 import { mapActions } from 'vuex'
 
 export default {
@@ -72,9 +72,7 @@ export default {
   },
   async created () {
     const skuId = this.sku.id
-    const imageList = await this.getImages(skuId)
-
-    this.images = imageList
+    this.images = await this.getImages(skuId)
   },
   methods: {
     ...mapActions([

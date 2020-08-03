@@ -49,22 +49,14 @@ const defaultUser = {
   }
 }
 
-// const baseUrl = process.env.NETLIFY_DEV ? 'http://localhost:8888' : process.env.URL
-console.log('process.env.NETLIFY_DEV', process.env.NETLIFY_DEV)
-const baseUrl = process.env.NETLIFY_DEV ? 'http://localhost:8888' : 'https://cuteneverdies.netlify.app'
-// const netlifyFunctionsBaseUrl = process.env.NETLIFY_FUNCTIONS_BASE_URL
+const netlifyFunctionsBaseUrl = process.env.NETLIFY_FUNCTIONS_BASE_URL
+const baseUrl = process.env.NODE_ENV === 'development'
+  ? 'http://localhost:8888/.netlify/functions'
+  // ? `http://localhost:8888${netlifyFunctionsBaseUrl}`
+  : `/${netlifyFunctionsBaseUrl}`
 
-const netlifyFunction = async (methodName, options) => {
-  const headers = options && options.headers ? {
-    'Content-Type': 'application/json',
-    ...options.headers
-  } : {
-    'Content-Type': 'application/json'
-  }
-  const response = await fetch(`${baseUrl}/.netlify/functions/${methodName}`, {
-    headers,
-    ...options
-  })
+const netlifyFunction = async (methodName, options = {}) => {
+  const response = await fetch(`${baseUrl}/${methodName}`, options)
 
   return await response.json()
 }
@@ -87,13 +79,11 @@ export const state = () => ({
 
 export const getters = {
   allSkus (state) {
-    const noSkusLoaded = state.user.cart.length === 0
+    const noSkusLoaded = state.skus.length === 0
 
     if (noSkusLoaded) return []
 
-    return state.user.cart.reduce((skus, product) => {
-      return skus.concat(product.skus.data)
-    }, [])
+    return state.skus
   },
 
   allSkusInCart (state, getters) {
@@ -168,13 +158,8 @@ export const actions = {
   async getImages ({ commit, state }, skuId) {
     const imageUrls = await netlifyFunction('get-images', {
       body: JSON.stringify({ skuId }),
-      method: 'POST',
-      headers: {
-        'Access-Control-Allow-Origin': '*'
-      }
+      method: 'POST'
     })
-
-    console.log(imageUrls)
 
     return imageUrls
   }
