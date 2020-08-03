@@ -50,15 +50,20 @@ const defaultUser = {
 }
 
 // const baseUrl = process.env.NETLIFY_DEV ? 'http://localhost:8888' : process.env.URL
-const baseUrl = process.env.NETLIFY_DEV ? 'http://localhost:8888' : 'https://cuteneverdies.netlify.app/'
-const netlifyFunctionsBaseUrl = process.env.NETLIFY_FUNCTIONS_BASE_URL
+console.log('process.env.NETLIFY_DEV', process.env.NETLIFY_DEV)
+const baseUrl = process.env.NETLIFY_DEV ? 'http://localhost:8888' : 'https://cuteneverdies.netlify.app'
+// const netlifyFunctionsBaseUrl = process.env.NETLIFY_FUNCTIONS_BASE_URL
 
-const netlifyFunction = async (name, httpMethod = 'GET') => {
-  const response = await fetch(`${baseUrl}${netlifyFunctionsBaseUrl}/get-skus`, {
-    method: httpMethod,
-    headers: {
-      'Content-Type': 'application/json'
-    }
+const netlifyFunction = async (methodName, options) => {
+  const headers = options && options.headers ? {
+    'Content-Type': 'application/json',
+    ...options.headers
+  } : {
+    'Content-Type': 'application/json'
+  }
+  const response = await fetch(`${baseUrl}/.netlify/functions/${methodName}`, {
+    headers,
+    ...options
   })
 
   return await response.json()
@@ -158,5 +163,19 @@ export const actions = {
     const { data } = await netlifyFunction('get-skus')
 
     commit('populateSkus', data)
+  },
+
+  async getImages ({ commit, state }, skuId) {
+    const imageUrls = await netlifyFunction('get-images', {
+      body: JSON.stringify({ skuId }),
+      method: 'POST',
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      }
+    })
+
+    console.log(imageUrls)
+
+    return imageUrls
   }
 }

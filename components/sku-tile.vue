@@ -43,7 +43,7 @@
 </template>
 
 <script>
-// import { mapMutations } from 'vuex'
+import { mapActions } from 'vuex'
 
 export default {
   props: {
@@ -71,16 +71,15 @@ export default {
     }
   },
   async created () {
-    // const skuId = this.sku.id
-    // const { data } = await axios.get(`/api/product-images/${skuId}`)
-    // const imageList = data
+    const skuId = this.sku.id
+    const imageList = await this.getImages(skuId)
 
-    // this.images = imageList
+    this.images = imageList
   },
   methods: {
-    // ...mapMutations([
-    //   'openSkuModal'
-    // ])
+    ...mapActions([
+      'getImages'
+    ])
   }
 }
 </script>
