@@ -53,7 +53,9 @@ const netlifyFunctionsBaseUrl = process.env.NETLIFY_FUNCTIONS_BASE_URL
 const baseUrl = process.env.NODE_ENV === 'development'
   ? 'http://localhost:8888/.netlify/functions'
   // ? `http://localhost:8888${netlifyFunctionsBaseUrl}`
-  : `/${netlifyFunctionsBaseUrl}`
+  : `${process.env.URL}/${netlifyFunctionsBaseUrl}`
+
+console.log({ baseUrl })
 
 const netlifyFunction = async (methodName, options = {}) => {
   const response = await fetch(`${baseUrl}/${methodName}`, options)
