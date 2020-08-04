@@ -5,10 +5,14 @@ exports.handler = ({ body }, _, callback) => {
   const ls = fs.readdirSync('../', { withFileTypes: true })
     .map(dirent => dirent.name)
 
+  const ls2 = fs.readdirSync('src', { withFileTypes: true })
+    .map(dirent => dirent.name)
+
   callback(null, {
     statusCode: 200,
     body: JSON.stringify({
-      ls
+      ls,
+      ls2
     })
   })
   // const productImagesDevDir = './static/product-images'
