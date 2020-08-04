@@ -3,7 +3,7 @@ const fs = require('fs').promises
 
 exports.handler = async ({ body }) => {
   const productImagesDevDir = './static/product-images'
-  const productImagesProdDir = './product-images'
+  const productImagesProdDir = '/product-images'
 
   let productImagesDir = ''
 
@@ -13,8 +13,6 @@ exports.handler = async ({ body }) => {
   } catch (err) {
     productImagesDir = productImagesProdDir
   }
-
-  // const productImagesDir = (await fs.stat(productImagesDevDir)) ? productImagesDevDir : productImagesProdDir
 
   const { skuId } = JSON.parse(body)
   const data = await fs.readFile(`${productImagesDir}/${skuId}/manifest.json`)
