@@ -38,6 +38,19 @@ export default {
     ]
   },
 
+  // publicRuntimeConfig: {
+  //   URL: process.env.URL,
+  //   NETLIFY_FUNCTIONS_BASE_URL: process.env.NETLIFY_FUNCTIONS_BASE_URL,
+  //   STRIPE_API_VERSION: process.env.STRIPE_API_VERSION,
+  //   STRIPE_PUBLISHABLE_TEST_KEY: process.env.STRIPE_PUBLISHABLE_TEST_KEY,
+  //   STRIPE_PUBLISHABLE_LIVE_KEY: process.env.STRIPE_PUBLISHABLE_LIVE_KEY
+  // },
+
+  // privateRuntimeConfig: {
+  //   STRIPE_SECRET_TEST_KEY: process.env.STRIPE_SECRET_TEST_KEY,
+  //   STRIPE_SECRET_LIVE_KEY: process.env.STRIPE_SECRET_LIVE_KEY
+  // },
+
   /*
   ** Plugins to load before mounting the App
   ** https://nuxtjs.org/guide/plugins

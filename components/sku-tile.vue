@@ -5,6 +5,7 @@
         <!-- <a :href="`/shop/${sku.id}`" @click.prevent="openSkuModal(sku)"> -->
         <a :href="`/shop/${sku.id}`">
           <img-responsive
+            v-if="images[0]"
             :src="images[0]"
             :alt="sku.id"
           />

@@ -1,6 +1,5 @@
 /* eslint-disable curly */
 /* eslint-disable no-console */
-// /* global $route */
 
 // import axios from 'axios'
 // import { createToken } from 'vue-stripe-elements-plus'
@@ -49,13 +48,11 @@ const defaultUser = {
   }
 }
 
-const netlifyFunctionsBaseUrl = process.env.NETLIFY_FUNCTIONS_BASE_URL
+// const netlifyFunctionsBaseUrl = process.env.NETLIFY_FUNCTIONS_BASE_URL
+const netlifyFunctionsBaseUrl = '.netlify/functions'
 const baseUrl = process.env.NODE_ENV === 'development'
-  ? 'http://localhost:8888/.netlify/functions'
-  // ? `http://localhost:8888${netlifyFunctionsBaseUrl}`
+  ? `http://localhost:8888/${netlifyFunctionsBaseUrl}`
   : `${process.env.URL}/${netlifyFunctionsBaseUrl}`
-
-console.log({ baseUrl })
 
 const netlifyFunction = async (methodName, options = {}) => {
   const response = await fetch(`${baseUrl}/${methodName}`, options)
@@ -157,12 +154,10 @@ export const actions = {
     commit('populateSkus', data)
   },
 
-  async getImages ({ commit, state }, skuId) {
-    const imageUrls = await netlifyFunction('get-images', {
+  async getImages (context, skuId) {
+    return await netlifyFunction('get-images', {
       body: JSON.stringify({ skuId }),
       method: 'POST'
     })
-
-    return imageUrls
   }
 }

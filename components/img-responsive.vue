@@ -1,10 +1,10 @@
 <template>
   <img
     :srcset="`
-      ${src},
-      ${src} 2x
+      ${src}?nf_resize=fit&w=300,
+      ${src}?nf_resize=fit&w=600 2x
     `"
-    :src="src"
+    :src="`${src}?nf_resize=fit&w=300`"
     :alt="$attrs.alt"
     class="img-responsive"
   >
@@ -48,8 +48,8 @@ export default {
       default: false
     }
   },
-  data () {
-  },
+  data: () => ({
+  }),
   computed: {
   },
   methods: {
