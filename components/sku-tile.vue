@@ -44,7 +44,7 @@
 
 <script>
 /* eslint-disable no-console */
-import { mapActions } from 'vuex'
+// import { mapActions } from 'vuex'
 
 export default {
   props: {
@@ -73,12 +73,12 @@ export default {
   },
   async created () {
     const skuId = this.sku.id
-    this.images = await this.getImages(skuId)
+    const response = await fetch(`/product-images/${skuId}/manifest.json`)
+    const filenames = await response.json()
+
+    this.images = filenames.map(filename => `product-images/${skuId}/${filename}`)
   },
   methods: {
-    ...mapActions([
-      'getImages'
-    ])
   }
 }
 </script>
