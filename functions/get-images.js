@@ -2,17 +2,13 @@
 const fs = require('fs')
 
 exports.handler = ({ body }, _, callback) => {
-  const ls = fs.readdirSync('./', { withFileTypes: true })
+  const ls = fs.readdirSync('../', { withFileTypes: true })
     .map(dirent => dirent.name)
-
-  const ls2 = fs.readdirSync('.', { withFileTypes: true })
-  .map(dirent => dirent.name)
 
   callback(null, {
     statusCode: 200,
     body: JSON.stringify({
-      ls,
-      ls2
+      ls
     })
   })
   // const productImagesDevDir = './static/product-images'
