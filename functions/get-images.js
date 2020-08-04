@@ -6,7 +6,7 @@ exports.handler = ({ body }, context, callback) => {
 
   recursiveReaddir(`./static/product-images/${skuId}/`, [isDsStore], (error, files) => {
     if (error) {
-      callback(Error('Error: Could not read product images directory'))
+      callback(Error(`Error: Could not read product images directory: ./static/product-images/${skuId}/`))
     }
     const productImages = files.map(path => path.replace('static', '')).sort()
 
