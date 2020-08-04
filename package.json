@@ -16,7 +16,6 @@
     "lodash": "^4.17.19",
     "nuxt": "^2.14.0",
     "nuxt-i18n": "^6.13.2",
-    "recursive-readdir": "^2.2.2",
     "stripe": "^8.80.0",
     "vue-object-merge": "^0.1.8"
   },

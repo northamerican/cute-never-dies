@@ -1,8 +1,29 @@
+import { readdirSync, writeFileSync } from 'fs'
+
 import shopConfig from './shop.public.config.js'
 import en from './locales/en.json'
 // import fr from './locales/fr.json'
 
 const { siteName } = shopConfig
+
+// In each product images directory,
+// create a json file with a list of image file names
+function createProductImagesManifest () {
+  const productImagesDir = './static/product-images'
+  const productImagesManifestFilename = 'manifest.json'
+
+  const getDirectories = source =>
+    readdirSync(source, { withFileTypes: true })
+      .filter(dirent => dirent.isDirectory())
+      .map(dirent => dirent.name)
+
+  getDirectories(productImagesDir).forEach((dir) => {
+    const images = readdirSync(`${productImagesDir}/${dir}`)
+      .filter(file => !file.includes(productImagesManifestFilename))
+
+    writeFileSync(`${productImagesDir}/${dir}/${productImagesManifestFilename}`, JSON.stringify(images))
+  })
+}
 
 export default {
   /*
@@ -116,6 +137,11 @@ export default {
         features: {
           customProperties: false
         }
+      }
+    },
+    extend (config, { isServer }) {
+      if (isServer) {
+        createProductImagesManifest()
       }
     }
   }

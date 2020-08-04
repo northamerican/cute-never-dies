@@ -1,21 +1,18 @@
-const recursiveReaddir = require('recursive-readdir')
 
-exports.handler = ({ body }, context, callback) => {
+const fs = require('fs').promises
+
+exports.handler = async ({ body }) => {
+  const productImagesDir = './static/product-images'
   const { skuId } = JSON.parse(body)
-  const isDsStore = file => file.includes('DS_Store')
+  const data = await fs.readFile(`${productImagesDir}/${skuId}/manifest.json`)
+  // 'static' served as root by nuxt
+  const imagePaths = JSON.parse(data).map(img => `./product-images/${skuId}/${img}`)
 
-  recursiveReaddir(`./static/product-images/${skuId}/`, [isDsStore], (error, files) => {
-    if (error) {
-      callback(Error(`Error: Could not read product images directory: ./static/product-images/${skuId}/`))
+  return {
+    statusCode: 200,
+    body: JSON.stringify(imagePaths),
+    headers: {
+      'Access-Control-Allow-Origin': '*'
     }
-    const productImages = files.map(path => path.replace('static', '')).sort()
-
-    callback(null, {
-      statusCode: 200,
-      body: JSON.stringify(productImages),
-      headers: {
-        'Access-Control-Allow-Origin': '*'
-      }
-    })
-  })
+  }
 }
