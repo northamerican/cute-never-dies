@@ -3,7 +3,7 @@ const fs = require('fs').promises
 
 exports.handler = async ({ body }) => {
   const productImagesDevDir = './static/product-images'
-  const productImagesProdDir = '/product-images'
+  const productImagesProdDir = 'https://cuteneverdies.netlify.app/product-images'
 
   let productImagesDir = ''
 
