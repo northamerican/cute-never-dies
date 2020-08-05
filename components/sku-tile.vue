@@ -75,6 +75,7 @@ export default {
   },
   created () {
     console.log(this.$config.url)
+    this.url = this.$config.url
     // this.url = isDev
     // const skuId = this.sku.id
     // const response = await fetch(`/product-images/${skuId}/manifest.json`)
