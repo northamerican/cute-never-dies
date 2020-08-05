@@ -3,6 +3,9 @@
     <section class="hero">
       <div class="hero-body hero-body--hero-image">
         <div class="container">
+          <p>
+            {{ user.versionHash }}
+          </p>
           <img-responsive
             src="hero-images/home.jpg"
             width="768"
