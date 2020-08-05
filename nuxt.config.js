@@ -62,7 +62,7 @@ export default {
   },
 
   publicRuntimeConfig: {
-    url: isDev ? 'http://localhost:8888' : prodUrl
+    url: isDev ? '' : prodUrl
     // NETLIFY_FUNCTIONS_BASE_URL: process.env.NETLIFY_FUNCTIONS_BASE_URL,
     // STRIPE_API_VERSION: process.env.STRIPE_API_VERSION,
     // STRIPE_PUBLISHABLE_TEST_KEY: process.env.STRIPE_PUBLISHABLE_TEST_KEY,

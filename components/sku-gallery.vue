@@ -23,16 +23,17 @@ export default {
   data: () => ({
     images: [],
     hasImages: false
-  })
-  // async created () {
-  //   const skuId = this.sku.id
-  //   const response = await fetch(`/product-images/${skuId}/manifest.json`)
-  //   const filenames = await response.json()
-  //   const limit = Array.isArray(this.limit) ? this.limit : [0, this.limit]
+  }),
+  async created () {
+    const { url } = this.$config
+    const skuId = this.sku.id
+    const response = await fetch(`${url}/product-images/${skuId}/manifest.json`)
+    const filenames = await response.json()
+    const limit = Array.isArray(this.limit) ? this.limit : [0, this.limit]
 
-  //   this.images = filenames.slice(...limit)
-  //   this.hasImages = filenames.length > 0
-  // }
+    this.images = filenames.slice(...limit)
+    this.hasImages = filenames.length > 0
+  }
 }
 </script>
 
