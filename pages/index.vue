@@ -3,9 +3,6 @@
     <section class="hero">
       <div class="hero-body hero-body--hero-image">
         <div class="container">
-          <p>
-            {{ user.versionHash }}
-          </p>
           <img-responsive
             src="hero-images/home.jpg"
             width="768"
@@ -20,6 +17,9 @@
     <section class="hero is-white">
       <div class="hero-body">
         <div class="container">
+          <p>
+            hash: {{ user.versionHash }}
+          </p>
           <h1 class="title">
             cute never dies
           </h1>
@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   // layout: 'dark',
@@ -74,6 +74,9 @@ export default {
     ]
   }),
   computed: {
+    ...mapState([
+      'user'
+    ]),
     ...mapGetters([
       'allSkus'
     ]),
