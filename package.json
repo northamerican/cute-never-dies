@@ -11,6 +11,7 @@
     "lint": "yarn lint:js"
   },
   "dependencies": {
+    "@nuxtjs/style-resources": "^1.0.0",
     "bulma": "^0.9.0",
     "locale-currency": "^0.0.2",
     "lodash": "^4.17.19",
@@ -27,8 +28,5 @@
     "eslint-plugin-nuxt": "^1.0.0",
     "node-sass": "^4.14.1",
     "sass-loader": "^9.0.2"
-  },
-  "resolutions": {
-    "bulma": "^0.9.0"
   }
 }

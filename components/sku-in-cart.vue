@@ -1,0 +1,85 @@
+<template>
+  <div>
+    <div v-if="inStock">
+      <a v-if="noneInCart" class="button is-light" @click="adjustInCart(+1)">Add to cart</a>
+      <div v-if="inCart" class="field has-addons">
+        <p class="control">
+          <a class="button is-light" @click="adjustInCart(-1)">
+            -
+          </a>
+        </p>
+        <p class="control">
+          <select :value="inCart" class="in-cart button is-light" @change="setInCart(+$event.target.value)">
+            <option v-for="n in stockAvailableRange" :key="n">
+              {{ n }}
+            </option>
+          </select>
+        </p>
+        <p class="control">
+          <a :disabled="hasAllInCart" class="button is-light" @click="adjustInCart(+1)">
+            +
+          </a>
+        </p>
+      </div>
+    </div>
+    <div v-else>
+      <a class="button is-light is-static">Not available</a>
+    </div>
+  </div>
+</template>
+
+<script>
+import { mapActions } from 'vuex'
+
+export default {
+  props: {
+    sku: {
+      type: Object,
+      default: () => ({})
+    }
+  },
+  computed: {
+    inStock () {
+      return this.sku.inventory.quantity
+    },
+    inCart () {
+      return this.sku.inCart
+    },
+    noneInCart () {
+      return this.inCart === 0
+    },
+    hasAllInCart () {
+      return this.inCart === this.inStock && this.inStock > 0
+    },
+    stockAvailableRange () {
+      const maxInList = 99
+      return [...Array(this.inStock + 1).keys()].slice(0, maxInList)
+    }
+  },
+  methods: {
+    ...mapActions([
+      'adjustItemCount',
+      'setItemCount'
+    ]),
+    adjustInCart (count) {
+      if (count > 0 && this.hasAllInCart) { return }
+      return this.adjustItemCount({ sku: this.sku, count })
+    },
+    setInCart (count) {
+      return this.setItemCount({ sku: this.sku, count })
+    }
+  }
+}
+</script>
+
+<style>
+  .in-cart {
+    text-align-last: center;
+    width: 50px;
+  }
+
+  .sold-out {
+    opacity: 1;
+    cursor: default;
+  }
+</style>

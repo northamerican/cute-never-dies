@@ -24,7 +24,7 @@ export default {
 
 <style lang="sass">
   html, body
-    font-family: "Rubik" //, $family-sans-serif
+    font-family: "Rubik", $family-sans-serif
     overflow-x: hidden
 
   #app
@@ -44,8 +44,8 @@ export default {
   main
     flex-grow: 1
     margin-top: 0
-    // +tablet
-    //   margin-top: $navbar-height
+    +tablet
+      margin-top: $navbar-height
 
   .hero-body--hero-image img
     width: 100%

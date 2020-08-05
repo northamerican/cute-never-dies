@@ -65,9 +65,6 @@
 import { mapState, mapGetters, mapActions } from 'vuex'
 
 export default {
-  components: {
-    // PriceFormat
-  },
   props: {
     darkTheme: {
       type: Boolean,
@@ -104,8 +101,8 @@ export default {
     position: static;
     top: 0;
     width: 100vw;
-    // +tablet
-    //   position: fixed;
+    +tablet
+      position: fixed;
 
     .navbar-brand .navbar-logo
       width: 42px;
@@ -116,7 +113,7 @@ export default {
     &.is-black .navbar-item
       color: white;
       &:hover
-        // color: $link;
+        color: $link;
 
     .navbar-logo
       display: none;
@@ -162,8 +159,8 @@ export default {
     margin-right: auto;
     flex-grow: 1;
     justify-content: space-evenly;
-    // +tablet
-    //   justify-content: flex-start;
+    +tablet
+      justify-content: flex-start;
 
   .navbar-end
     justify-content: flex-end;
@@ -176,9 +173,9 @@ export default {
     flex-wrap: wrap;
     justify-content: center;
     height: 70px;
-    // +tablet
-    //   flex-direction: row;
-    //   height: auto;
+    +tablet
+      flex-direction: row;
+      height: auto;
 
   .is-hidden
     display: none;

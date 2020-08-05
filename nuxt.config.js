@@ -5,10 +5,12 @@ import en from './locales/en.json'
 // import fr from './locales/fr.json'
 
 const { siteName } = shopConfig
+const isDev = process.env.NODE_ENV !== 'production'
+const prodUrl = 'https://cuteneverdies.netlify.app'
 
 // In each product images directory,
 // create a json file with a list of image file names
-function createProductImagesManifest () {
+function createProductImageManifests () {
   const productImagesDir = './static/product-images'
   const productImagesManifestFilename = 'manifest.json'
 
@@ -59,13 +61,13 @@ export default {
     ]
   },
 
-  // publicRuntimeConfig: {
-  //   URL: process.env.URL,
-  //   NETLIFY_FUNCTIONS_BASE_URL: process.env.NETLIFY_FUNCTIONS_BASE_URL,
-  //   STRIPE_API_VERSION: process.env.STRIPE_API_VERSION,
-  //   STRIPE_PUBLISHABLE_TEST_KEY: process.env.STRIPE_PUBLISHABLE_TEST_KEY,
-  //   STRIPE_PUBLISHABLE_LIVE_KEY: process.env.STRIPE_PUBLISHABLE_LIVE_KEY
-  // },
+  publicRuntimeConfig: {
+    url: isDev ? 'http://localhost:8888' : prodUrl
+    // NETLIFY_FUNCTIONS_BASE_URL: process.env.NETLIFY_FUNCTIONS_BASE_URL,
+    // STRIPE_API_VERSION: process.env.STRIPE_API_VERSION,
+    // STRIPE_PUBLISHABLE_TEST_KEY: process.env.STRIPE_PUBLISHABLE_TEST_KEY,
+    // STRIPE_PUBLISHABLE_LIVE_KEY: process.env.STRIPE_PUBLISHABLE_LIVE_KEY
+  },
 
   // privateRuntimeConfig: {
   //   STRIPE_SECRET_TEST_KEY: process.env.STRIPE_SECRET_TEST_KEY,
@@ -118,7 +120,8 @@ export default {
       },
       defaultLocale: 'en',
       noPrefixDefaultLocale: true
-    }]
+    }],
+    '@nuxtjs/style-resources'
   ],
 
   styleResources: {
@@ -141,7 +144,7 @@ export default {
     },
     extend (config, { isServer }) {
       if (isServer) {
-        createProductImagesManifest()
+        createProductImageManifests()
       }
     }
   }

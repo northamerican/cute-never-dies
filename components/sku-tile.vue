@@ -3,6 +3,7 @@
     <div class="card-image">
       <figure class="image">
         <!-- <a :href="`/shop/${sku.id}`" @click.prevent="openSkuModal(sku)"> -->
+        <p>{{ url }}</p>
         <a :href="`/shop/${sku.id}`">
           <img-responsive
             v-if="images[0]"
@@ -58,7 +59,8 @@ export default {
     }
   },
   data: () => ({
-    images: []
+    images: [],
+    url: ''
   }),
   computed: {
     inStock () {
@@ -71,12 +73,14 @@ export default {
       return this.sku.attributes.original_price * 100
     }
   },
-  async created () {
-    const skuId = this.sku.id
-    const response = await fetch(`/product-images/${skuId}/manifest.json`)
-    const filenames = await response.json()
+  created () {
+    console.log(this.$config.url)
+    // this.url = isDev
+    // const skuId = this.sku.id
+    // const response = await fetch(`/product-images/${skuId}/manifest.json`)
+    // const filenames = await response.json()
 
-    this.images = filenames.map(filename => `product-images/${skuId}/${filename}`)
+    // this.images = filenames.map(filename => `product-images/${skuId}/${filename}`)
   },
   methods: {
   }

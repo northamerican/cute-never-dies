@@ -152,12 +152,5 @@ export const actions = {
     const { data } = await netlifyFunction('get-skus')
 
     commit('populateSkus', data)
-  },
-
-  async getImages (context, skuId) {
-    return await netlifyFunction('get-images', {
-      body: JSON.stringify({ skuId }),
-      method: 'POST'
-    })
   }
 }
