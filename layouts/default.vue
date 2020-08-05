@@ -36,11 +36,6 @@ export default {
   .__nuxt-error-page
     text-transform: none
 
-  .nuxt-progress
-    //? https://github.com/nuxt/nuxt.js/pull/3891
-    // seems none of nuxt-progress's styles are loading
-    position: fixed
-
   main
     flex-grow: 1
     margin-top: 0

@@ -2,9 +2,9 @@
   <nav class="navbar">
     <div class="container">
       <div class="navbar-brand">
-        <!-- <nuxt-link :to="localePath('index')" class="navbar-item">
+        <nuxt-link :to="localePath('index')" class="navbar-item">
           <img :alt="siteName" :title="siteName" class="navbar-logo navbar-logo--black" src="/img/cute-never-dies.svg">
-        </nuxt-link> -->
+        </nuxt-link>
       </div>
       <div class="navbar-start is-shadowless">
         <nuxt-link :to="localePath('gallery')" class="navbar-item">

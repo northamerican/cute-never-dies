@@ -6,6 +6,11 @@
     `"
     :src="`${src}?nf_resize=fit&w=300`"
     :alt="$attrs.alt"
+    :style="{
+      'min-height': minHeightToUnit,
+      'object-fit': position ? 'cover': 'fill',
+      'object-position': position ? position : '50% 50%'
+    }"
     class="img-responsive"
   >
 </template>
@@ -51,6 +56,12 @@ export default {
   data: () => ({
   }),
   computed: {
+    minHeightToUnit () {
+      const { minHeight } = this
+      const isNum = !isNaN(minHeight)
+
+      return isNum ? `${minHeight}px` : minHeight
+    }
   },
   methods: {
   }

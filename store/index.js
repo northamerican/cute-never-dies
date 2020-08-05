@@ -1,7 +1,6 @@
 /* eslint-disable curly */
 /* eslint-disable no-console */
 
-// import axios from 'axios'
 // import { createToken } from 'vue-stripe-elements-plus'
 // import { stateMerge } from 'vue-object-merge'
 // import CreatePersistedState from 'vuex-persistedstate'
@@ -12,9 +11,10 @@ const {
   siteName,
   yearCreated,
   baseCurrency,
-  currencies,
-  versionHash
+  currencies
 } = shopConfig
+
+const versionHash = process.env.BUILD_ID
 
 const userLocalCurrency = () => {
   if (!process.browser) {
@@ -30,7 +30,7 @@ const defaultUser = {
   cart: [],
   name: '',
   email: '',
-  // versionHash,
+  versionHash,
   currency: userLocalCurrency(),
   address: {
     line1: '',
@@ -48,7 +48,6 @@ const defaultUser = {
   }
 }
 
-// const netlifyFunctionsBaseUrl = process.env.NETLIFY_FUNCTIONS_BASE_URL
 const netlifyFunctionsBaseUrl = '.netlify/functions'
 const baseUrl = process.env.NODE_ENV === 'development'
   ? `http://localhost:8888/${netlifyFunctionsBaseUrl}`

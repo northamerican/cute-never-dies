@@ -5,9 +5,9 @@
         <!-- <a :href="`/shop/${sku.id}`" @click.prevent="openSkuModal(sku)"> -->
         <a :href="`/shop/${sku.id}`">
           <img-responsive
-            v-if="images[0]"
             :src="images[0]"
             :alt="sku.id"
+            :min-height="309"
           />
         </a>
         <sku-colors :sku="sku" />
@@ -43,9 +43,6 @@
 </template>
 
 <script>
-/* eslint-disable no-console */
-// import { mapActions } from 'vuex'
-
 export default {
   props: {
     sku: {
@@ -77,8 +74,9 @@ export default {
     const skuId = this.sku.id
     const response = await fetch(`${url}/product-images/${skuId}/manifest.json`)
     const filenames = await response.json()
+    const filenamesWithPaths = filenames.map(filename => `/product-images/${skuId}/${filename}`)
 
-    this.images = filenames.map(filename => `product-images/${skuId}/${filename}`)
+    this.images = filenamesWithPaths
   },
   methods: {
   }

@@ -29,10 +29,12 @@ export default {
     const skuId = this.sku.id
     const response = await fetch(`${url}/product-images/${skuId}/manifest.json`)
     const filenames = await response.json()
+    const filenamesWithPaths = filenames.map(filename => `/product-images/${skuId}/${filename}`)
+
     const limit = Array.isArray(this.limit) ? this.limit : [0, this.limit]
 
-    this.images = filenames.slice(...limit)
-    this.hasImages = filenames.length > 0
+    this.images = filenamesWithPaths.slice(...limit)
+    this.hasImages = filenamesWithPaths.length > 0
   }
 }
 </script>

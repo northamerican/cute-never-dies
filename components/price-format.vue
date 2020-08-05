@@ -1,28 +1,26 @@
 <template>
   <client-only>
-    <div>
-      <div v-if="currencyDropdown" class="dropdown is-hoverable">
-        <div class="dropdown-trigger">
-          <span class="display-price">{{ displayPrice(price) }}</span>
-          <span v-if="!baseCurrencyIsActive" class="display-price"> ({{ basePrice(price) }})</span>
-        </div>
-        <div class="dropdown-menu currency-menu" role="menu">
-          <div class="dropdown-content">
-            <a
-              v-for="(rate, currency) in currencies"
-              :key="currency"
-              :class="{ 'is-active': currencyIsActive(currency) }"
-              class="dropdown-item"
-              @click="setCurrency(currency)"
-            >
-              {{ currency }}
-            </a>
-          </div>
+    <div v-if="currencyDropdown" class="dropdown is-hoverable">
+      <div class="dropdown-trigger">
+        <span class="display-price">{{ displayPrice(price) }}</span>
+        <span v-if="!baseCurrencyIsActive" class="display-price"> ({{ basePrice(price) }})</span>
+      </div>
+      <div class="dropdown-menu currency-menu" role="menu">
+        <div class="dropdown-content">
+          <a
+            v-for="(rate, currency) in currencies"
+            :key="currency"
+            :class="{ 'is-active': currencyIsActive(currency) }"
+            class="dropdown-item"
+            @click="setCurrency(currency)"
+          >
+            {{ currency }}
+          </a>
         </div>
       </div>
-
-      <span>{{ basePrice(price) }}<span v-if="showBaseCurrency"> ({{ baseCurrency }})</span></span>
     </div>
+
+    <span v-else>{{ basePrice(price) }}<span v-if="showBaseCurrency"> ({{ baseCurrency }})</span></span>
   </client-only>
 </template>
 
