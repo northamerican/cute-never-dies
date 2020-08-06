@@ -2,8 +2,7 @@
 /* eslint-disable no-console */
 
 // import { createToken } from 'vue-stripe-elements-plus'
-import createPersistedState from 'vuex-persistedstate'
-import * as Cookies from 'js-cookie'
+import CreatePersistedState from 'vuex-persistedstate'
 
 import { stateMerge } from 'vue-object-merge'
 import LocaleCurrency from 'locale-currency'
@@ -62,20 +61,8 @@ const netlifyFunction = async (methodName, options = {}) => {
 }
 
 export const plugins = [
-  createPersistedState({
-    storage: {
-      paths: ['user'],
-      getItem: (key) => {
-        const c = Cookies.get(key)
-        console.log({ c })
-        return Cookies.get(key)
-      },
-      // Please see https://github.com/js-cookie/js-cookie#json, on how to handle JSON.
-      setItem: (key, value) => {
-        return Cookies.set(key, value, { expires: 3, secure: true })
-      },
-      removeItem: key => Cookies.remove(key)
-    }
+  CreatePersistedState({
+    paths: ['user']
   })
 ]
 
@@ -88,7 +75,7 @@ export const state = () => ({
     [baseCurrency]: 1,
     ...currencies.reduce((currencies, currency) => ({ [currency]: null, ...currencies }), {})
   },
-  skus: {},
+  skus: [],
   user: { ...defaultUser }
 })
 
@@ -289,7 +276,7 @@ export const actions = {
     commit('setItemCount', { sku, count })
   },
 
-  async nuxtServerInit ({ commit, dispatch }) {
+  async nuxtClientInit ({ commit, dispatch }) {
     if (getters.hasVersionChange) {
       commit('resetUser')
     }

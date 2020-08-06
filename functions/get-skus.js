@@ -7,6 +7,9 @@ exports.handler = async () => {
 
   return {
     statusCode: 200,
-    body: JSON.stringify(products)
+    body: JSON.stringify(products),
+    headers: {
+      'Access-Control-Allow-Origin': '*'
+    }
   }
 }
