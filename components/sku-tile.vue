@@ -3,13 +3,15 @@
     <div class="card-image">
       <figure class="image">
         <!-- <a :href="`/shop/${sku.id}`" @click.prevent="openSkuModal(sku)"> -->
-        <a :href="`/shop/${sku.id}`">
+        <!-- <a :href="`/shop/${sku.id}`"> -->
+        <nuxt-link :to="localePath(`/shop/${sku.id}`)">
           <img-responsive
             :src="images[0]"
             :alt="sku.id"
             :min-height="309"
           />
-        </a>
+        </nuxt-link>
+        <!-- </a> -->
         <sku-colors :sku="sku" />
       </figure>
     </div>
@@ -17,9 +19,11 @@
       <div class="media">
         <div class="media-content">
           <p class="title is-4">
-            <a :href="`/shop/${sku.id}`" @click.prevent="openSkuModal(sku)">
+            <!-- <a :href="`/shop/${sku.id}`" @click.prevent="openSkuModal(sku)"> -->
+            <nuxt-link :to="localePath(`/shop/${sku.id}`)">
               {{ sku.product }}
-            </a>
+            </nuxt-link>
+            <!-- </a> -->
           </p>
           <p class="subtitle is-6">
             <price-format
