@@ -108,7 +108,6 @@ export default {
   }),
   computed: {
     ...mapGetters([
-      'allSkus',
       'paymentResponse',
       'paymentSuccess'
     ]),

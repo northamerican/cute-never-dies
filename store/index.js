@@ -80,16 +80,8 @@ export const state = () => ({
 })
 
 export const getters = {
-  allSkus (state) {
-    const noSkusLoaded = state.skus.length === 0
-
-    if (noSkusLoaded) return []
-
-    return state.skus
-  },
-
   allSkusInCart (state, getters) {
-    return getters.allSkus.filter(sku => sku.inCart)
+    return state.user.cart
   },
 
   skusInCartCount (state, getters) {
@@ -207,7 +199,8 @@ export const mutations = {
     if (!cartItem) {
       state.user.cart.push({
         id: sku.id,
-        inCart: count
+        inCart: count,
+        sku
       })
     } else {
       cartItem.inCart += count

@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 
 export default {
   props: {
@@ -46,8 +46,8 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'allSkus'
+    ...mapState([
+      'skus'
     ]),
     totalPrice () {
       return this.sku.price * this.sku.inCart
@@ -61,7 +61,7 @@ export default {
       'openSkuModal'
     ]),
     getSkuById (id) {
-      return this.allSkus.find(sku => sku.id === id)
+      return this.skus.find(sku => sku.id === id)
     }
   }
 }

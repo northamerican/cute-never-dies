@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   // layout: 'dark',
@@ -75,10 +75,8 @@ export default {
   }),
   computed: {
     ...mapState([
+      'skus',
       'user'
-    ]),
-    ...mapGetters([
-      'allSkus'
     ]),
     featuredSkus () {
       return this.featuredSkusList.map(this.idToSku)
@@ -86,7 +84,7 @@ export default {
   },
   methods: {
     idToSku (id) {
-      return this.allSkus.find(sku => sku.id === id)
+      return this.skus.find(sku => sku.id === id)
     }
   },
   head: {

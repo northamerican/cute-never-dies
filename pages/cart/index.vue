@@ -14,7 +14,7 @@
       <div class="container">
         <div class="product-row">
           <!-- <transition-group name="cart-list" tag="div"> -->
-          <article v-for="sku in allSkusInCart" :key="sku.id" class="sku-cart-container">
+          <article v-for="({ sku }) in allSkusInCart" :key="sku.id" class="sku-cart-container">
             <sku-cart :sku="sku" />
             <hr>
           </article>

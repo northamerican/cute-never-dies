@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   asyncData: ({ params }) => {
@@ -21,11 +21,11 @@ export default {
     return params.id
   },
   computed: {
-    ...mapGetters([
-      'allSkus'
+    ...mapState([
+      'skus'
     ]),
     sku () {
-      return this.allSkus.find(sku => sku.id === this.skuID)
+      return this.skus.find(sku => sku.id === this.skuID)
     }
   },
   head: () => ({

@@ -35,7 +35,7 @@
 import Vue from 'vue'
 import chunk from 'lodash/chunk'
 
-import { mapState, mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   data: () => ({
@@ -44,14 +44,12 @@ export default {
   }),
   computed: {
     ...mapState([
+      'skus',
       'user'
-    ]),
-    ...mapGetters([
-      'allSkus'
     ])
   },
   created () {
-    this.allSkus.forEach(async (sku) => {
+    this.skus.forEach(async (sku) => {
       const { url } = this.$config
       const skuId = sku.id
       const response = await fetch(`${url}/product-images/${skuId}/manifest.json`)

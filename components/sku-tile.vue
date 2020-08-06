@@ -6,6 +6,7 @@
         <!-- <a :href="`/shop/${sku.id}`"> -->
         <nuxt-link :to="localePath(`/shop/${sku.id}`)">
           <img-responsive
+            v-if="images[0]"
             :src="images[0]"
             :alt="sku.id"
             :min-height="309"
