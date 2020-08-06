@@ -18,7 +18,7 @@
       <div class="hero-body">
         <div class="container">
           <p>
-            hash: {{ user.versionHash }}
+            hash: {{ user.buildId }}
           </p>
           <h1 class="title">
             cute never dies

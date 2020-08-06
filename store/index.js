@@ -2,8 +2,10 @@
 /* eslint-disable no-console */
 
 // import { createToken } from 'vue-stripe-elements-plus'
-// import { stateMerge } from 'vue-object-merge'
-// import CreatePersistedState from 'vuex-persistedstate'
+import createPersistedState from 'vuex-persistedstate'
+import * as Cookies from 'js-cookie'
+
+import { stateMerge } from 'vue-object-merge'
 import LocaleCurrency from 'locale-currency'
 import shopConfig from '~/shop.public.config.js'
 
@@ -14,7 +16,7 @@ const {
   currencies
 } = shopConfig
 
-const versionHash = process.env.BUILD_ID
+const buildId = process.env.BUILD_ID
 
 const userLocalCurrency = () => {
   if (!process.browser) {
@@ -30,7 +32,7 @@ const defaultUser = {
   cart: [],
   name: '',
   email: '',
-  versionHash,
+  buildId,
   currency: userLocalCurrency(),
   address: {
     line1: '',
@@ -60,12 +62,27 @@ const netlifyFunction = async (methodName, options = {}) => {
 }
 
 export const plugins = [
+  createPersistedState({
+    storage: {
+      paths: ['user'],
+      getItem: (key) => {
+        const c = Cookies.get(key)
+        console.log({ c })
+        return Cookies.get(key)
+      },
+      // Please see https://github.com/js-cookie/js-cookie#json, on how to handle JSON.
+      setItem: (key, value) => {
+        return Cookies.set(key, value, { expires: 3, secure: true })
+      },
+      removeItem: key => Cookies.remove(key)
+    }
+  })
 ]
 
 export const state = () => ({
   siteName,
   yearCreated,
-  versionHash,
+  buildId,
   baseCurrency,
   currencies: {
     [baseCurrency]: 1,
@@ -127,8 +144,8 @@ export const getters = {
     return getters.paymentResponse && !getters.paymentError
   },
 
-  hasVersionUpdate (state) {
-    return state.user.versionHash !== state.versionHash
+  hasVersionChange (state) {
+    return state.user.buildId !== state.buildId
   },
 
   currencyRate (state) {
@@ -137,13 +154,153 @@ export const getters = {
 }
 
 export const mutations = {
+  updateUserData (state, data) {
+    stateMerge(state.user, data)
+    state.user.stripe.orderResponse = null
+  },
+
+  resetUser (state) {
+    stateMerge(state.user, defaultUser)
+  },
+
   populateSkus (state, skus) {
     state.skus = skus
+  },
+
+  populateCart (state, { products, existingSkus }) {
+    // // Ensure quantities already in cart do not exceed those in stock
+    // products.data.forEach(product => product.skus.data.forEach(sku => {
+    //   const existingSku = existingSkus.find(existingSku => sku.id === existingSku.id) || {}
+    //   const inStock = sku.inventory.quantity
+    //   const inCart = existingSku.inCart || 0
+
+    //   sku.inCart = Math.min(inCart, inStock)
+    // }))
+
+    // state.user.cart = products.data
+  },
+
+  clearCart (state) {
+    // state.user.cart.forEach(product => product.skus.data.forEach(sku => {
+    //   sku.inCart = 0
+    // }))
+  },
+
+  openSkuModal (state, sku) {
+    // if (!sku) return
+
+    // const isMobile = window.innerWidth < 769
+    // const url = `/shop/${sku.id}`
+
+    // if (isMobile) {
+    //   $nuxt._router.push(url)
+    // } else {
+    //   history.pushState({}, null, url)
+    //   state.modals.sku = sku
+    // }
+  },
+
+  dismissSkuModal (state) {
+    if (state.modals.sku === null) return
+
+    history.back()
+    state.modals.sku = null
+  },
+
+  dismissModals (state) {
+    Object.keys(state.modals)
+      .forEach((modalName) => {
+        state.modals[modalName] = null
+      })
+  },
+
+  adjustItemCount (state, { sku, count }) {
+    const cartItem = state.user.cart.find(skuInCart => skuInCart.id === sku.id)
+
+    if (!cartItem) {
+      state.user.cart.push({
+        id: sku.id,
+        inCart: count
+      })
+    } else {
+      cartItem.inCart += count
+    }
+  },
+
+  // state.user.cart: [
+  //   { id: 'crunchy-green' inCart: 0 }
+  // ]
+  setItemCount (state, { sku, count }) {
+    const cartItem = state.user.cart.find(skuInCart => skuInCart.id === sku.id)
+
+    if (!cartItem) {
+      state.user.cart.push({
+        id: sku.id,
+        inCart: count
+      })
+    } else {
+      cartItem.inCart = count
+    }
+  },
+
+  saveStripeOrderResponse (state, order) {
+    state.user.stripe.orderResponse = order
+  },
+
+  clearStripeOrderResponse (state) {
+    state.user.stripe.orderResponse = null
+  },
+
+  stripeOrderProcessing (state, isProcessing) {
+    state.user.stripe.orderProcessing = isProcessing
+  },
+
+  saveStripePaymentResponse (state, payment) {
+    state.user.stripe.paymentResponse = payment
+  },
+
+  clearStripePaymentResponse (state) {
+    state.user.stripe.paymentResponse = null
+  },
+
+  stripePaymentProcessing (state, isProcessing) {
+    state.user.stripe.paymentProcessing = isProcessing
+  },
+
+  setCurrencyRate (state, { currencyCode, rate }) {
+    state.currencies[currencyCode] = rate
+  },
+
+  setCurrency (state, currencyCode) {
+    state.user.currency = currencyCode
   }
 }
 
 export const actions = {
-  async nuxtServerInit ({ dispatch }) {
+  adjustItemCount ({ commit }, { sku, count }) {
+    commit('clearStripeOrderResponse')
+    // dispatch('createOrder') // ! show totals on cart change? - debounce it
+    commit('adjustItemCount', { sku, count })
+  },
+
+  setItemCount ({ commit }, { sku, count }) {
+    commit('clearStripeOrderResponse')
+    // dispatch('createOrder') // ! show totals on cart change? - debounce it
+    commit('setItemCount', { sku, count })
+  },
+
+  async nuxtServerInit ({ commit, dispatch }) {
+    if (getters.hasVersionChange) {
+      commit('resetUser')
+    }
+    // if (getters.paymentError) {
+    //   commit('clearStripePaymentResponse')
+    // }
+
+    // commit('stripeOrderProcessing', false)
+    // commit('stripePaymentProcessing', false)
+    // dispatch('setCurrency', state.user.currency)
+
     await dispatch('getSkus')
   },
 

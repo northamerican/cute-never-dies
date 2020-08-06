@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 
 export default {
   props: {
@@ -39,11 +39,20 @@ export default {
     }
   },
   computed: {
+    ...mapState([
+      'user'
+    ]),
     inStock () {
       return this.sku.inventory.quantity
     },
     inCart () {
-      return this.sku.inCart
+      const cartItem = this.user.cart.find(sku => sku.id === this.sku.id)
+
+      if (!cartItem) {
+        return 0
+      }
+
+      return cartItem.inCart
     },
     noneInCart () {
       return this.inCart === 0
