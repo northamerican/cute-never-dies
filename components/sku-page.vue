@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   props: {
@@ -102,11 +102,6 @@ export default {
     originalPrice () {
       return this.sku.attributes.original_price * 100
     }
-  },
-  methods: {
-    ...mapMutations([
-      'openSkuModal'
-    ])
   }
 }
 </script>

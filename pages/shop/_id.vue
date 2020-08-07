@@ -12,9 +12,10 @@
 import { mapState } from 'vuex'
 
 export default {
-  asyncData: ({ params }) => {
+  asyncData ({ params }) {
     return {
-      skuID: params.id
+      skuID: params.id,
+      title: params.id
     }
   },
   validate ({ params }) {
@@ -28,8 +29,10 @@ export default {
       return this.skus.find(sku => sku.id === this.skuID)
     }
   },
-  head: () => ({
-    // title: this.sku.product
-  })
+  head () {
+    return {
+      title: this.sku.product
+    }
+  }
 }
 </script>

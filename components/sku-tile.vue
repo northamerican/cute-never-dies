@@ -2,9 +2,7 @@
   <div class="sku-tile card is-shadowless">
     <div class="card-image">
       <figure class="image">
-        <!-- <a :href="`/shop/${sku.id}`" @click.prevent="openSkuModal(sku)"> -->
-        <!-- <a :href="`/shop/${sku.id}`"> -->
-        <nuxt-link :to="localePath(`/shop/${sku.id}`)">
+        <nuxt-link :to="localePath(`/shop/${sku.id}`)" event="" @click.native="openSkuModal(sku)">
           <img-responsive
             v-if="images[0]"
             :src="images[0]"
@@ -12,7 +10,6 @@
             :min-height="309"
           />
         </nuxt-link>
-        <!-- </a> -->
         <sku-colors :sku="sku" />
       </figure>
     </div>
@@ -20,11 +17,9 @@
       <div class="media">
         <div class="media-content">
           <p class="title is-4">
-            <!-- <a :href="`/shop/${sku.id}`" @click.prevent="openSkuModal(sku)"> -->
-            <nuxt-link :to="localePath(`/shop/${sku.id}`)">
+            <nuxt-link :to="localePath(`/shop/${sku.id}`)" event="" @click.native="openSkuModal(sku)">
               {{ sku.product }}
             </nuxt-link>
-            <!-- </a> -->
           </p>
           <p class="subtitle is-6">
             <price-format
@@ -48,6 +43,8 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
+
 export default {
   props: {
     sku: {
@@ -84,6 +81,9 @@ export default {
     this.images = filenamesWithPaths
   },
   methods: {
+    ...mapMutations([
+      'openSkuModal'
+    ])
   }
 }
 </script>

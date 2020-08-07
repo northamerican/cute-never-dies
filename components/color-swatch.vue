@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import startCase from 'lodash/startCase'
+import { startCase } from 'lodash'
 import colorsAda from '~/assets/js/colors-ada'
 
 export default {

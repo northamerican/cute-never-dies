@@ -3,7 +3,7 @@
     <div class="container">
       <div class="navbar-brand">
         <nuxt-link :to="localePath('index')" class="navbar-item">
-          <img :alt="siteName" :title="siteName" class="navbar-logo navbar-logo--black" src="/img/cute-never-dies.svg">
+          <img :alt="siteName" :title="siteName" class="navbar-logo" src="/img/cute-never-dies.svg">
         </nuxt-link>
       </div>
       <div class="navbar-start is-shadowless">
@@ -104,9 +104,6 @@ export default {
     +tablet
       position: fixed;
 
-    .navbar-brand .navbar-logo
-      width: 42px;
-
     .container
       display: flex;
 
@@ -116,13 +113,10 @@ export default {
         color: $link;
 
     .navbar-logo
-      display: none;
+      width: 42px;
 
-    &.is-black .navbar-logo--white
-      display: block;
-
-    &.is-light .navbar-logo--black
-      display: block;
+    &.is-black .navbar-logo
+      filter: invert(1);
 
     .in-cart-tag
       transition-property: all;

@@ -1,8 +1,10 @@
+/* global $nuxt */
 /* eslint-disable curly */
 /* eslint-disable no-console */
 
 // import { createToken } from 'vue-stripe-elements-plus'
 import CreatePersistedState from 'vuex-persistedstate'
+import { remove } from 'lodash'
 
 import { stateMerge } from 'vue-object-merge'
 import LocaleCurrency from 'locale-currency'
@@ -11,11 +13,10 @@ import shopConfig from '~/shop.public.config.js'
 const {
   siteName,
   yearCreated,
+  versionHash,
   baseCurrency,
   currencies
 } = shopConfig
-
-const buildId = process.env.BUILD_ID
 
 const userLocalCurrency = () => {
   if (!process.browser) {
@@ -31,7 +32,7 @@ const defaultUser = {
   cart: [],
   name: '',
   email: '',
-  buildId,
+  versionHash,
   currency: userLocalCurrency(),
   address: {
     line1: '',
@@ -56,7 +57,6 @@ const baseUrl = process.env.NODE_ENV === 'development'
 
 const netlifyFunction = async (methodName, options = {}) => {
   const response = await fetch(`${baseUrl}/${methodName}`, options)
-
   return await response.json()
 }
 
@@ -69,23 +69,22 @@ export const plugins = [
 export const state = () => ({
   siteName,
   yearCreated,
-  buildId,
+  versionHash,
   baseCurrency,
   currencies: {
     [baseCurrency]: 1,
     ...currencies.reduce((currencies, currency) => ({ [currency]: null, ...currencies }), {})
   },
   skus: [],
-  user: { ...defaultUser }
+  user: { ...defaultUser },
+  modals: {
+    sku: null
+  }
 })
 
 export const getters = {
-  allSkusInCart (state, getters) {
-    return state.user.cart
-  },
-
   skusInCartCount (state, getters) {
-    return getters.allSkusInCart.reduce((skuCount, sku) => {
+    return state.user.cart.reduce((skuCount, sku) => {
       return skuCount + sku.inCart
     }, 0)
   },
@@ -124,7 +123,7 @@ export const getters = {
   },
 
   hasVersionChange (state) {
-    return state.user.buildId !== state.buildId
+    return state.user.versionHash !== state.versionHash
   },
 
   currencyRate (state) {
@@ -166,17 +165,17 @@ export const mutations = {
   },
 
   openSkuModal (state, sku) {
-    // if (!sku) return
+    if (!sku) return
 
-    // const isMobile = window.innerWidth < 769
-    // const url = `/shop/${sku.id}`
+    const isMobile = window.innerWidth < 769
+    const url = `/shop/${sku.id}`
 
-    // if (isMobile) {
-    //   $nuxt._router.push(url)
-    // } else {
-    //   history.pushState({}, null, url)
-    //   state.modals.sku = sku
-    // }
+    if (isMobile) {
+      $nuxt._router.push(url)
+    } else {
+      history.pushState({}, null, url)
+      state.modals.sku = sku
+    }
   },
 
   dismissSkuModal (state) {
@@ -193,20 +192,6 @@ export const mutations = {
       })
   },
 
-  adjustItemCount (state, { sku, count }) {
-    const cartItem = state.user.cart.find(skuInCart => skuInCart.id === sku.id)
-
-    if (!cartItem) {
-      state.user.cart.push({
-        id: sku.id,
-        inCart: count,
-        sku
-      })
-    } else {
-      cartItem.inCart += count
-    }
-  },
-
   // state.user.cart: [
   //   { id: 'crunchy-green' inCart: 0 }
   // ]
@@ -219,6 +204,9 @@ export const mutations = {
         inCart: count
       })
     } else {
+      if (count === 0) {
+        remove(state.user.cart, cartItem)
+      }
       cartItem.inCart = count
     }
   },
@@ -257,20 +245,15 @@ export const mutations = {
 }
 
 export const actions = {
-  adjustItemCount ({ commit }, { sku, count }) {
-    commit('clearStripeOrderResponse')
-    // dispatch('createOrder') // ! show totals on cart change? - debounce it
-    commit('adjustItemCount', { sku, count })
-  },
-
   setItemCount ({ commit }, { sku, count }) {
     commit('clearStripeOrderResponse')
     // dispatch('createOrder') // ! show totals on cart change? - debounce it
     commit('setItemCount', { sku, count })
   },
 
-  async nuxtClientInit ({ commit, dispatch }) {
+  async nuxtClientInit ({ commit, dispatch, getters }) {
     if (getters.hasVersionChange) {
+      console.log('hasVersionChange')
       commit('resetUser')
     }
     // if (getters.paymentError) {

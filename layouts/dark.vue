@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <site-navbar class="is-light" />
+    <site-navbar class="is-black" />
     <nuxt />
     <site-footer />
     <sku-modal />
@@ -36,12 +36,12 @@ export default {
   .__nuxt-error-page
     text-transform: none
 
+  .nuxt-progress
+    //? https://github.com/nuxt/nuxt.js/pull/3891
+    // seems none of nuxt-progress's styles are loading
+    position: fixed
+
   main
     flex-grow: 1
-    margin-top: 0
-    +tablet
-      margin-top: $navbar-height
-
-  .hero-body--hero-image img
-    width: 100%
+    margin-top: $navbar-height
 </style>

@@ -94,7 +94,7 @@ export default {
         transform: translate(-300px, 420px)
         text-align: right
       &--plastic
-        transform: translate(90px, 40px)
+        transform: translate(90px, 35px)
       &--size
         transform: translate(-330px, 180px)
         text-align: right

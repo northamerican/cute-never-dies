@@ -91,9 +91,23 @@ export default {
   */
   buildModules: [
     // Doc: https://github.com/nuxt-community/eslint-module
+    '@aceforth/nuxt-netlify',
     '@nuxtjs/eslint-module',
+    '@nuxtjs/style-resources',
     'nuxt-purgecss'
   ],
+  netlify: {
+    mergeSecurityHeaders: true,
+    redirects: [
+      {
+        from: '/shop',
+        to: '/shop/:id',
+        query: {
+          id: ':id'
+        }
+      }
+    ]
+  },
   /*
   ** Nuxt.js modules
   */
@@ -122,8 +136,7 @@ export default {
       },
       defaultLocale: 'en',
       noPrefixDefaultLocale: true
-    }],
-    '@nuxtjs/style-resources'
+    }]
   ],
 
   styleResources: {

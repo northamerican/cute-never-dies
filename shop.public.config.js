@@ -3,6 +3,8 @@ export default {
   siteName: 'cute never dies',
   yearCreated: 2018,
 
+  versionHash: 1596322973532,
+
   baseCurrency: 'CAD',
   currencies: ['USD', 'EUR', 'GBP'],
 

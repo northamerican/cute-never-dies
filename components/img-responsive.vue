@@ -1,10 +1,8 @@
 <template>
   <img
-    :srcset="`
-      ${src}?nf_resize=fit&w=300,
-      ${src}?nf_resize=fit&w=600 2x
-    `"
-    :src="`${src}?nf_resize=fit&w=300`"
+    :srcset="computedSrcset"
+    :src="computedSrc"
+    :width="computedWidth"
     :alt="$attrs.alt"
     :style="{
       'min-height': minHeightToUnit,
@@ -61,6 +59,20 @@ export default {
       const isNum = !isNaN(minHeight)
 
       return isNum ? `${minHeight}px` : minHeight
+    },
+    computedSrc () {
+      const { src, width } = this
+      return src + (width ? `?nf_resize=fit&w=${width}` : '')
+    },
+    computedSrcset () {
+      return `
+        ${this.computedSrc},
+        ${this.computedSrc} 2x
+      `
+    },
+    computedWidth () {
+      const { width } = this
+      return width ? width * 2 : null
     }
   },
   methods: {
@@ -69,10 +81,10 @@ export default {
 </script>
 
 <style scoped lang="sass">
-  // img
-  //   width: auto
-  //   // keep images withing the constraints of the viewport, modals
-  //   max-height: calc(100vh - #{$modal-content-spacing-mobile})
-  //   +tablet
-  //     max-height: calc(100vh - #{$modal-content-spacing-tablet})
+  img
+    // width: auto
+    // keep images withing the constraints of the viewport, modals
+    max-height: calc(100vh - #{$modal-content-spacing-mobile})
+    +tablet
+      max-height: calc(100vh - #{$modal-content-spacing-tablet})
 </style>

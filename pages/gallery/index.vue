@@ -33,7 +33,7 @@
 
 <script>
 import Vue from 'vue'
-import chunk from 'lodash/chunk'
+import { chunk } from 'lodash'
 
 import { mapState } from 'vuex'
 

@@ -5,9 +5,8 @@
         <div class="container">
           <img-responsive
             src="hero-images/home.jpg"
-            width="768"
+            width="1344"
             alt="cute never dies"
-            min-height="320"
             position="30% 50%"
           />
         </div>
@@ -17,9 +16,6 @@
     <section class="hero is-white">
       <div class="hero-body">
         <div class="container">
-          <p>
-            hash: {{ user.buildId }}
-          </p>
           <h1 class="title">
             cute never dies
           </h1>
@@ -65,7 +61,6 @@
 import { mapState } from 'vuex'
 
 export default {
-  // layout: 'dark',
   data: () => ({
     featuredSkusList: [
       'crunchy-green',

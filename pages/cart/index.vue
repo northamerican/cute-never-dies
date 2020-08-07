@@ -13,12 +13,12 @@
     <section v-if="hasSkusInCart" class="section">
       <div class="container">
         <div class="product-row">
-          <!-- <transition-group name="cart-list" tag="div"> -->
-          <article v-for="({ sku }) in allSkusInCart" :key="sku.id" class="sku-cart-container">
-            <sku-cart :sku="sku" />
-            <hr>
-          </article>
-          <!-- </transition-group> -->
+          <transition-group name="cart-list" tag="div">
+            <article v-for="cartItem in user.cart" :key="cartItem.id" class="sku-cart-container">
+              <sku-cart :cart-item="cartItem" />
+              <hr>
+            </article>
+          </transition-group>
         </div>
       </div>
       <div class="container">
@@ -274,7 +274,7 @@
 <script>
 import { mapState, mapGetters, mapActions, mapMutations } from 'vuex'
 import { Card } from 'vue-stripe-elements-plus'
-import sampleSize from 'lodash/sampleSize'
+import { sampleSize } from 'lodash'
 import countries from '~/assets/js/countries'
 import colorsAda from '~/assets/js/colors-ada'
 import shopConfig from '~/shop.public.config.js'
@@ -303,11 +303,11 @@ export default {
   computed: {
     ...mapState([
       'user',
+      'skus',
       'siteName'
     ]),
     ...mapGetters([
       'skusInCartCount',
-      'allSkusInCart',
       'hasSkusInCart',
       'hasEmptyCart',
       'orderProcessing',
@@ -319,8 +319,8 @@ export default {
       'paymentError'
     ]),
     totalPrice () {
-      return this.allSkusInCart
-        .map(({ price, inCart }) => price * inCart)
+      return this.user.cart
+        .map(({ id, inCart }) => this.getSkuById(id).price * inCart)
         .reduce((a, b) => a + b)
     },
     taxes () {
@@ -349,6 +349,9 @@ export default {
       'createOrder',
       'payOrder'
     ]),
+    getSkuById (id) {
+      return this.skus.find(sku => sku.id === id)
+    },
     maskRandomColors (n) {
       return Array.from(Array(n), () => sampleSize(colorsAda, 5))
     }

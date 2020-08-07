@@ -42,7 +42,6 @@ export default {
     cursor: pointer
 
   .modal-content
-    width: $fullhd
-    max-width: $fullhd
+    width: 80vw
     margin: 0 20px
 </style>

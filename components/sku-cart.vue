@@ -2,18 +2,18 @@
   <div class="sku-cart columns is-mobile is-multiline">
     <div class="column is-narrow">
       <figure class="image">
-        <a :href="`/shop/${renderedSku.id}`" @click.prevent="openSkuModal(renderedSku)">
+        <nuxt-link :to="localePath(`/shop/${renderedSku.id}`)" event="" @click.native="openSkuModal(renderedSku)">
           <sku-gallery :sku="renderedSku" :limit="1" />
-        </a>
+        </nuxt-link>
         <sku-colors :sku="renderedSku" />
       </figure>
     </div>
     <div class="column" style="white-space: nowrap;">
       <div class="content">
         <p class="title is-4">
-          <a :href="`/shop/${renderedSku.id}`" @click.prevent="openSkuModal(renderedSku)">
+          <nuxt-link :to="localePath(`/shop/${renderedSku.id}`)" event="" @click.native="openSkuModal(renderedSku)">
             <span>{{ renderedSku.product }}</span>
-          </a>
+          </nuxt-link>
         </p>
         <p class="subtitle is-6">
           <price-format :price="renderedSku.price" :show-base-currency="true" />
@@ -36,7 +36,7 @@ import { mapState, mapMutations } from 'vuex'
 
 export default {
   props: {
-    sku: {
+    cartItem: {
       type: Object,
       default: () => ({})
     },
@@ -50,10 +50,10 @@ export default {
       'skus'
     ]),
     totalPrice () {
-      return this.sku.price * this.sku.inCart
+      return this.getSkuById(this.cartItem.id).price * this.cartItem.inCart
     },
     renderedSku () {
-      return this.sku.id ? this.sku : this.getSkuById(this.skuOrder.parent)
+      return this.getSkuById(this.cartItem.id ? this.cartItem.id : this.getSkuById(this.skuOrder.parent))
     }
   },
   methods: {

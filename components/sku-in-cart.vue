@@ -1,10 +1,10 @@
 <template>
   <div>
     <div v-if="inStock">
-      <a v-if="noneInCart" class="button is-light" @click="adjustInCart(+1)">Add to cart</a>
+      <a v-if="noneInCart" class="button is-light" @click="setInCart(inCart + 1)">Add to cart</a>
       <div v-if="inCart" class="field has-addons">
         <p class="control">
-          <a class="button is-light" @click="adjustInCart(-1)">
+          <a class="button is-light" @click="setInCart(inCart - 1)">
             -
           </a>
         </p>
@@ -16,7 +16,7 @@
           </select>
         </p>
         <p class="control">
-          <a :disabled="hasAllInCart" class="button is-light" @click="adjustInCart(+1)">
+          <a :disabled="hasAllInCart" class="button is-light" @click="setInCart(inCart + 1)">
             +
           </a>
         </p>
@@ -67,14 +67,11 @@ export default {
   },
   methods: {
     ...mapActions([
-      'adjustItemCount',
       'setItemCount'
     ]),
-    adjustInCart (count) {
-      if (count > 0 && this.hasAllInCart) { return }
-      return this.adjustItemCount({ sku: this.sku, count })
-    },
     setInCart (count) {
+      if (count < 0) { return }
+      if (count > this.inStock) { return }
       return this.setItemCount({ sku: this.sku, count })
     }
   }
