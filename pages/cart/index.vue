@@ -277,29 +277,26 @@ import { Card } from 'vue-stripe-elements-plus'
 import { sampleSize } from 'lodash'
 import countries from '~/assets/js/countries'
 import colorsAda from '~/assets/js/colors-ada'
-import shopConfig from '~/shop.public.config.js'
-
-const {
-  stripeIsLiveMode,
-  stripePublishableKeyTest,
-  stripePublishableKeyLive
-} = shopConfig
 
 export default {
   components: {
     Card
   },
-  data: () => ({
-    stripePublishableKey: stripeIsLiveMode ? stripePublishableKeyLive : stripePublishableKeyTest,
-    stripeOptions: {
-      hidePostalCode: true
-    },
-    hasCard: false,
-    name: '',
-    email: '',
-    address: {},
-    countries
-  }),
+  data ({ $config }) {
+    return {
+      stripePublishableKey: $config.STRIPE_IS_LIVE_MODE === 'true'
+        ? $config.STRIPE_PUBLISHABLE_KEY_LIVE
+        : $config.STRIPE_PUBLISHABLE_KEY_TEST,
+      stripeOptions: {
+        hidePostalCode: true
+      },
+      hasCard: false,
+      name: '',
+      email: '',
+      address: {},
+      countries
+    }
+  },
   computed: {
     ...mapState([
       'user',

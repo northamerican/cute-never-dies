@@ -2,12 +2,16 @@
   <div class="sku-tile card is-shadowless">
     <div class="card-image">
       <figure class="image">
-        <nuxt-link :to="localePath(`/shop/${sku.id}`)" event="" @click.native="openSkuModal(sku)">
+        <nuxt-link :to="localePath(`/shop?sku=${sku.id}`)" event="" @click.native="openSkuModal(sku)">
           <img-responsive
             v-if="images[0]"
+            :srcset="[720, 476]"
             :src="images[0]"
+            :sizes="{
+              desktop: '33vw',
+              tablet: '50vw'
+            }"
             :alt="sku.id"
-            :min-height="309"
           />
         </nuxt-link>
         <sku-colors :sku="sku" />
@@ -17,7 +21,7 @@
       <div class="media">
         <div class="media-content">
           <p class="title is-4">
-            <nuxt-link :to="localePath(`/shop/${sku.id}`)" event="" @click.native="openSkuModal(sku)">
+            <nuxt-link :to="localePath(`/shop?sku=${sku.id}`)" event="" @click.native="openSkuModal(sku)">
               {{ sku.product }}
             </nuxt-link>
           </p>
@@ -43,7 +47,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapMutations, mapActions } from 'vuex'
 
 export default {
   props: {
@@ -55,6 +59,12 @@ export default {
       type: Boolean,
       default: () => true
     }
+  },
+  async fetch () {
+    this.images = await this.getImages({
+      sku: this.sku,
+      url: this.$config.url
+    })
   },
   data: () => ({
     images: [],
@@ -71,18 +81,12 @@ export default {
       return this.sku.attributes.original_price * 100
     }
   },
-  async created () {
-    const { url } = this.$config
-    const skuId = this.sku.id
-    const response = await fetch(`${url}/product-images/${skuId}/manifest.json`)
-    const filenames = await response.json()
-    const filenamesWithPaths = filenames.map(filename => `/product-images/${skuId}/${filename}`)
-
-    this.images = filenamesWithPaths
-  },
   methods: {
     ...mapMutations([
       'openSkuModal'
+    ]),
+    ...mapActions([
+      'getImages'
     ])
   }
 }

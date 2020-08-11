@@ -15,14 +15,13 @@
           <!-- <h1 class="title">{{ skuId }}</h1> -->
           <div v-for="images in chunk(Object.values(imageList), imageList.length % 2 === 0 ? 2 : 3)" :key="images[0]" class="columns">
             <div v-for="image in images" :key="image" class="column">
-              <a :href="`shop/${skuId}`">
+              <nuxt-link :to="localePath(`/shop?sku=${skuId}`)" event="" @click.native="openSkuModal(getSkuById(skuId))">
                 <img-responsive
                   :src="image"
                   min-height="100%"
                   position="50% 50%"
-                  class="gallery-image"
                 />
-              </a>
+              </nuxt-link>
             </div>
           </div>
         </div>
@@ -34,30 +33,37 @@
 <script>
 import Vue from 'vue'
 import { chunk } from 'lodash'
-
-import { mapState } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 
 export default {
+  fetch () {
+    this.skus.forEach(async (sku) => {
+      Vue.set(this.skuImages, sku.id, await this.getImages({
+        sku,
+        url: this.$config.url
+      }))
+    })
+  },
   data: () => ({
-    skuImages: {},
-    chunk
+    skuImages: {}
   }),
   computed: {
+    chunk: () => chunk,
     ...mapState([
       'skus',
       'user'
     ])
   },
-  created () {
-    this.skus.forEach(async (sku) => {
-      const { url } = this.$config
-      const skuId = sku.id
-      const response = await fetch(`${url}/product-images/${skuId}/manifest.json`)
-      const filenames = await response.json()
-      const filenamesWithPaths = filenames.map(filename => `/product-images/${skuId}/${filename}`)
-
-      Vue.set(this.skuImages, skuId, filenamesWithPaths)
-    })
+  methods: {
+    ...mapMutations([
+      'openSkuModal'
+    ]),
+    ...mapActions([
+      'getImages'
+    ]),
+    getSkuById (id) {
+      return this.skus.find(sku => sku.id === id)
+    }
   },
   head: {
     title: 'gallery'
@@ -66,7 +72,5 @@ export default {
 </script>
 
 <style scoped>
-  .gallery-image {
-    height: 100%;
-  }
+
 </style>

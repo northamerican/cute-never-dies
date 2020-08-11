@@ -1,10 +1,9 @@
 import { readdirSync, writeFileSync } from 'fs'
 
-import shopConfig from './shop.public.config.js'
+import { siteName } from './shop.public.config.js'
 import en from './locales/en.json'
 // import fr from './locales/fr.json'
 
-const { siteName } = shopConfig
 const isDev = process.env.NODE_ENV !== 'production'
 const prodUrl = 'https://cuteneverdies.netlify.app'
 
@@ -42,6 +41,7 @@ export default {
   ** Headers of the page
   ** See https://nuxtjs.org/api/configuration-head
   */
+  fetchOnServer: false,
   head: {
     title: siteName,
     titleTemplate: `%s - ${siteName}`,
@@ -62,13 +62,13 @@ export default {
   },
 
   publicRuntimeConfig: {
-    url: isDev ? 'http://localhost:3000' : prodUrl
+    url: isDev ? 'http://localhost:3000' : prodUrl,
     // NETLIFY_FUNCTIONS_BASE_URL: process.env.NETLIFY_FUNCTIONS_BASE_URL,
     // STRIPE_API_VERSION: process.env.STRIPE_API_VERSION,
-    // STRIPE_PUBLISHABLE_TEST_KEY: process.env.STRIPE_PUBLISHABLE_TEST_KEY,
-    // STRIPE_PUBLISHABLE_LIVE_KEY: process.env.STRIPE_PUBLISHABLE_LIVE_KEY
+    STRIPE_IS_LIVE_MODE: process.env.STRIPE_IS_LIVE_MODE,
+    STRIPE_PUBLISHABLE_KEY_TEST: process.env.STRIPE_PUBLISHABLE_KEY_TEST,
+    STRIPE_PUBLISHABLE_KEY_LIVE: process.env.STRIPE_PUBLISHABLE_KEY_LIVE
   },
-
   // privateRuntimeConfig: {
   //   STRIPE_SECRET_TEST_KEY: process.env.STRIPE_SECRET_TEST_KEY,
   //   STRIPE_SECRET_LIVE_KEY: process.env.STRIPE_SECRET_LIVE_KEY

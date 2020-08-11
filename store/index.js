@@ -8,15 +8,13 @@ import { remove } from 'lodash'
 
 import { stateMerge } from 'vue-object-merge'
 import LocaleCurrency from 'locale-currency'
-import shopConfig from '~/shop.public.config.js'
-
-const {
+import {
   siteName,
   yearCreated,
   versionHash,
   baseCurrency,
   currencies
-} = shopConfig
+} from '~/shop.public.config.js'
 
 const userLocalCurrency = () => {
   if (!process.browser) {
@@ -168,7 +166,7 @@ export const mutations = {
     if (!sku) return
 
     const isMobile = window.innerWidth < 769
-    const url = `/shop/${sku.id}`
+    const url = `/shop?sku=${sku.id}`
 
     if (isMobile) {
       $nuxt._router.push(url)
@@ -253,7 +251,6 @@ export const actions = {
 
   async nuxtClientInit ({ commit, dispatch, getters }) {
     if (getters.hasVersionChange) {
-      console.log('hasVersionChange')
       commit('resetUser')
     }
     // if (getters.paymentError) {
@@ -271,5 +268,14 @@ export const actions = {
     const { data } = await netlifyFunction('get-skus')
 
     commit('populateSkus', data)
+  },
+
+  async getImages (_, { sku, url }) {
+    const { id } = sku
+    const response = await fetch(`${url}/product-images/${id}/manifest.json`)
+    const filenames = await response.json()
+
+    return filenames
+      .map(filename => `/product-images/${id}/${filename}`)
   }
 }

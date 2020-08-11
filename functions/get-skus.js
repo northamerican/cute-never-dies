@@ -1,4 +1,8 @@
-const stripe = require('stripe')(process.env.STRIPE_SECRET_TEST_KEY, {
+const secretKey = process.env.STRIPE_IS_LIVE_MODE === 'true'
+  ? process.env.STRIPE_SECRET_KEY_LIVE
+  : process.env.STRIPE_SECRET_KEY_TEST
+
+const stripe = require('stripe')(secretKey, {
   apiVersion: process.env.STRIPE_API_VERSION
 })
 

@@ -3,7 +3,12 @@
     <div class="columns">
       <div class="column is-half-desktop">
         <figure class="image">
-          <sku-gallery :sku="sku" :limit="1" />
+          <img-responsive
+            v-if="images[0]"
+            :srcset="[574]"
+            :src="images[0]"
+            :alt="sku.id"
+          />
         </figure>
       </div>
       <div class="column is-5-desktop">
@@ -61,7 +66,16 @@
         </div>
       </div>
     </div>
-    <sku-gallery :sku="sku" :limit="[1, Infinity]" />
+    <div
+      v-for="image in images.slice(1, Infinity)"
+      :key="image"
+      class="gallery"
+    >
+      <img
+        :src="image"
+        :alt="sku.id"
+      >
+    </div>
     <hr>
     <div class="columns">
       <mask-illustration :sku="sku" />
@@ -71,7 +85,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   props: {
@@ -80,6 +94,15 @@ export default {
       default: () => ({})
     }
   },
+  async fetch () {
+    this.images = await this.getImages({
+      sku: this.sku,
+      url: this.$config.url
+    })
+  },
+  data: () => ({
+    images: []
+  }),
   computed: {
     ...mapState([
       'user',
@@ -102,6 +125,11 @@ export default {
     originalPrice () {
       return this.sku.attributes.original_price * 100
     }
+  },
+  methods: {
+    ...mapActions([
+      'getImages'
+    ])
   }
 }
 </script>
@@ -110,5 +138,8 @@ export default {
   .original-price {
     text-decoration: line-through;
     color: #dd0000;
+  }
+  .gallery {
+    text-align: center;
   }
 </style>

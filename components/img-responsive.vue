@@ -1,11 +1,11 @@
 <template>
   <img
     :srcset="computedSrcset"
-    :src="computedSrc"
-    :width="computedWidth"
+    :src="src"
+    :sizes="computedSizes"
     :alt="$attrs.alt"
+    :width="$attrs.width"
     :style="{
-      'min-height': minHeightToUnit,
       'object-fit': position ? 'cover': 'fill',
       'object-position': position ? position : '50% 50%'
     }"
@@ -14,17 +14,6 @@
 </template>
 
 <script>
-// import resize from 'vue-resize-directive'
-// import shopConfig from '~/shop.public.config.js'
-
-// ! images with 'position' should also have a width set, as the v-resize directive
-
-// const defaultQuality = 90
-// const { imageSizes } = shopConfig
-// const getValidSize = (imgWidth, imageSizes) =>
-//   imageSizes.reduce((solution, current) =>
-//     imgWidth > solution ? current : solution)
-
 export default {
   inheritAttrs: false,
   props: {
@@ -32,15 +21,18 @@ export default {
       type: String,
       required: true
     },
-    width: {
-      type: [String, Number],
-      default: () => 0
-      // default: () => getValidSize(0, imageSizes)
+    srcset: {
+      type: Array,
+      required: true,
+      default: () => []
     },
-    quality: {
-      type: [String, Number],
-      default: () => 0
-      // default: () => defaultQuality
+    sizes: {
+      type: Object,
+      default: undefined
+    },
+    densities: {
+      type: Array,
+      default: () => [1, 2]
     },
     minHeight: {
       type: [String, Number],
@@ -54,37 +46,37 @@ export default {
   data: () => ({
   }),
   computed: {
-    minHeightToUnit () {
-      const { minHeight } = this
-      const isNum = !isNaN(minHeight)
-
-      return isNum ? `${minHeight}px` : minHeight
-    },
-    computedSrc () {
-      const { src, width } = this
-      return src + (width ? `?nf_resize=fit&w=${width}` : '')
-    },
     computedSrcset () {
-      return `
-        ${this.computedSrc},
-        ${this.computedSrc} 2x
-      `
+      const { src, srcset } = this
+
+      return srcset
+        .flatMap(size => this.densities.map(density => size * density))
+        .sort((a, b) => b - a)
+        .map(size => `${src}?nf_resize=fit&w=${size} ${size}w`)
+        .join(', ')
     },
-    computedWidth () {
-      const { width } = this
-      return width ? width * 2 : null
+    computedSizes () {
+      if (!this.sizes) {
+        return null
+      }
+
+      const { desktop, tablet, mobile } = this.sizes
+
+      return (desktop ? `(min-width: 1024px) ${desktop}, ` : '') +
+        (tablet ? `(min-width: 769px) ${tablet}, ` : '') +
+        (mobile || '100vw')
     }
-  },
-  methods: {
   }
 }
 </script>
 
 <style scoped lang="sass">
-  img
-    // width: auto
-    // keep images withing the constraints of the viewport, modals
-    max-height: calc(100vh - #{$modal-content-spacing-mobile})
-    +tablet
-      max-height: calc(100vh - #{$modal-content-spacing-tablet})
+  .img-responsive
+    width: auto
+    // Constain heights of images
+    max-height: 100vh
+    .modal &
+      max-height: calc(100vh - #{$modal-content-spacing-mobile})
+      +tablet
+        max-height: calc(100vh - #{$modal-content-spacing-tablet})
 </style>

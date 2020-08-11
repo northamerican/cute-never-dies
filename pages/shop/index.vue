@@ -1,10 +1,16 @@
 <template>
   <main>
-    <section class="hero is-primary">
+    <section v-if="skuId" class="section">
+      <div class="container">
+        <sku-page :sku="getSkuById(skuId)" />
+      </div>
+    </section>
+
+    <section v-else class="hero is-primary">
       <div class="hero-body">
         <div class="container">
           <h1 class="title">
-            {{ $t('Shop') }}
+            {{ $t('Shop') }} {{ skuId }}
           </h1>
         </div>
       </div>
@@ -41,10 +47,21 @@
 import { mapState } from 'vuex'
 
 export default {
+  asyncData ({ query }) {
+    return {
+      skuId: query.sku,
+      loaded: true
+    }
+  },
   computed: {
     ...mapState([
       'skus'
     ])
+  },
+  methods: {
+    getSkuById (id) {
+      return this.skus.find(sku => sku.id === id)
+    }
   },
   head: {
     title: 'shop'
