@@ -7,7 +7,6 @@ const versionHash = 1596322973532
 
 const baseCurrency = 'CAD'
 const currencies = ['CAD', 'USD', 'EUR', 'GBP', 'AUD']
-const freeShippingCountries = ['CA', 'US']
 
 export {
   siteUrl,
@@ -15,6 +14,5 @@ export {
   yearCreated,
   versionHash,
   baseCurrency,
-  currencies,
-  freeShippingCountries
+  currencies
 }
