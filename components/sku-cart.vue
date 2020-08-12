@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 <template>
   <div class="sku-cart columns is-mobile is-multiline">
     <div class="column is-narrow">
@@ -66,11 +67,14 @@ export default {
     ...mapState([
       'skus'
     ]),
-    totalPrice () {
-      return this.getSkuById(this.cartItem.id).price * this.cartItem.inCart
-    },
     sku () {
-      return this.getSkuById(this.cartItem.id ? this.cartItem.id : this.getSkuById(this.skuOrder.parent))
+      return this.skuOrder ? this.getSkuById(this.skuOrder.parent) : this.getSkuById(this.cartItem.id)
+    },
+    quantity () {
+      return this.skuOrder ? this.skuOrder.quantity : this.cartItem.inCart
+    },
+    totalPrice () {
+      return this.sku.price * this.cartItem.inCart
     }
   },
   methods: {

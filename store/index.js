@@ -1,8 +1,6 @@
 /* global $nuxt */
-/* eslint-disable curly */
-/* eslint-disable no-console */
 
-// import { createToken } from 'vue-stripe-elements-plus'
+import { createToken } from 'vue-stripe-elements-plus'
 import CreatePersistedState from 'vuex-persistedstate'
 import { remove } from 'lodash'
 
@@ -157,16 +155,17 @@ export const mutations = {
   },
 
   clearCart (state) {
-    // state.user.cart.forEach(product => product.skus.data.forEach(sku => {
-    //   sku.inCart = 0
-    // }))
+    state.user.cart = []
   },
 
   openSkuModal (state, sku) {
-    if (!sku) return
+    if (!sku) {
+      return
+    }
 
     const isMobile = window.innerWidth < 769
     const url = `/shop?sku=${sku.id}`
+    // const url = this.$i18n.vm.localePath(`/shop?sku=${sku.id}`)
 
     if (isMobile) {
       $nuxt._router.push(url)
@@ -177,7 +176,9 @@ export const mutations = {
   },
 
   dismissSkuModal (state) {
-    if (state.modals.sku === null) return
+    if (state.modals.sku === null) {
+      return
+    }
 
     history.back()
     state.modals.sku = null
@@ -253,12 +254,12 @@ export const actions = {
     if (getters.hasVersionChange) {
       commit('resetUser')
     }
-    // if (getters.paymentError) {
-    //   commit('clearStripePaymentResponse')
-    // }
+    if (getters.paymentError) {
+      commit('clearStripePaymentResponse')
+    }
 
-    // commit('stripeOrderProcessing', false)
-    // commit('stripePaymentProcessing', false)
+    commit('stripeOrderProcessing', false)
+    commit('stripePaymentProcessing', false)
     // dispatch('setCurrency', state.user.currency)
 
     await dispatch('getSkus')
@@ -277,5 +278,81 @@ export const actions = {
 
     return filenames
       .map(filename => `/product-images/${id}/${filename}`)
+  },
+
+  async createOrder ({ state, getters, commit }) {
+    commit('stripeOrderProcessing', true)
+
+    const { name, address, email } = state.user
+    const orderData = {
+      currency: state.baseCurrency,
+      items: state.user.cart.map(({ id, object, inCart }) => ({
+        parent: id,
+        type: object,
+        quantity: inCart
+      })),
+      shipping: {
+        name, address
+      },
+      email
+    }
+
+    try {
+      const response = await netlifyFunction('create-order', { body: JSON.stringify(orderData), method: 'POST' })
+      commit('saveStripeOrderResponse', response)
+    } catch (error) {
+      if (error.response) {
+        commit('saveStripeOrderResponse', error.response)
+        throw new Error(error.response)
+      }
+      throw error
+    } finally {
+      commit('stripeOrderProcessing', false)
+    }
+  },
+
+  async payOrder ({ commit, state }) {
+    commit('stripePaymentProcessing', true)
+
+    try {
+      const id = state.user.stripe.orderResponse.id
+      const { token, error } = await createToken()
+      if (error) {
+        throw error
+      }
+      const response = await netlifyFunction('pay-order', { body: JSON.stringify({ id, token, error }), method: 'POST' })
+
+      $nuxt._router.push('/orders', () => {
+        commit('saveStripePaymentResponse', response)
+        commit('clearCart')
+      })
+    } catch (error) {
+      if (error.response) {
+        commit('saveStripePaymentResponse', error.response)
+        throw new Error(error.response)
+      }
+      throw error
+    } finally {
+      commit('stripePaymentProcessing', false)
+    }
+  },
+
+  // Retrieve the latest order (so shipping info is updated)
+  async retrieveOrder ({ commit, state, getters }) {
+    try {
+      if (!getters.paymentSuccess) {
+        return
+      }
+
+      const id = state.user.stripe.paymentResponse.id
+      const response = await netlifyFunction('retrieve-order', { body: JSON.stringify({ id }), method: 'POST' })
+
+      commit('saveStripePaymentResponse', response)
+    } catch (error) {
+      if (error.response) {
+        throw new Error(error.response)
+      }
+      throw error
+    }
   }
 }

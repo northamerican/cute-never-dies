@@ -65,7 +65,8 @@ export default {
   },
   head: {
     title: 'shop'
-  }
+  },
+  watchQuery: ['sku']
 }
 </script>
 

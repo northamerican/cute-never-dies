@@ -74,7 +74,6 @@ export default {
   .img-responsive
     width: auto
     // Constain heights of images
-    max-height: 100vh
     .modal &
       max-height: calc(100vh - #{$modal-content-spacing-mobile})
       +tablet
