@@ -8,20 +8,20 @@
       </div>
       <div class="navbar-start is-shadowless">
         <nuxt-link :to="localePath('gallery')" class="navbar-item">
-          <span class="is-hidden-tablet is-block-mobile">🖼</span>
+          <!-- <span class="is-hidden-tablet is-block-mobile">🖼</span> -->
           <span class="is-size-7-mobile">{{ $t('Gallery') }}</span>
         </nuxt-link>
         <nuxt-link :to="localePath('shop')" class="navbar-item">
-          <span class="is-hidden-tablet is-block-mobile">🛍</span>
+          <!-- <span class="is-hidden-tablet is-block-mobile">🛍</span> -->
           <span class="is-size-7-mobile">{{ $t('Shop') }}</span>
         </nuxt-link>
         <nuxt-link :to="localePath('cart')" class="navbar-item">
-          <span class="is-hidden-tablet is-block-mobile">🛒</span>
+          <!-- <span class="is-hidden-tablet is-block-mobile">🛒</span> -->
           <span class="is-size-7-mobile">{{ $t('Cart') }}</span>
           <span :class="{ skusInCartCount }" class="tag is-primary in-cart-tag is-hidden-mobile">{{ skusInCartCount || '' }}</span>
         </nuxt-link>
         <nuxt-link v-if="paymentSuccess" :to="localePath('orders')" class="navbar-item">
-          <span class="is-hidden-tablet is-block-mobile">📦</span>
+          <!-- <span class="is-hidden-tablet is-block-mobile">📦</span> -->
           <span class="is-size-7-mobile">{{ $t('Orders') }}</span>
         </nuxt-link>
       </div>
@@ -45,7 +45,7 @@
           </div>
         </div>
         <nuxt-link :to="localePath('contact')" class="navbar-item">
-          <span class="is-hidden-tablet is-block-mobile">📧</span>
+          <!-- <span class="is-hidden-tablet is-block-mobile">📧</span> -->
           <span class="is-size-7-mobile">{{ $t('Contact') }}</span>
         </nuxt-link>
         <!-- <nuxt-link
