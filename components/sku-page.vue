@@ -70,11 +70,12 @@
       <template
         v-for="image in images.slice(1, Infinity)"
       >
-        <img
+        <img-responsive
           :key="image"
+          :srcset="[1344, 768]"
           :src="image"
           :alt="null"
-        >
+        />
       </template>
     </div>
     <hr>
