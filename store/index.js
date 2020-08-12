@@ -100,7 +100,7 @@ export const getters = {
     return state.user.stripe.orderResponse
   },
   orderError (state, getters) {
-    return getters.orderResponse && (Number.isInteger(getters.orderResponse.status) && getters.orderResponse.status !== 200)
+    return getters.orderResponse && (Number.isInteger(getters.orderResponse.statusCode) && getters.orderResponse.statusCode !== 200)
   },
   orderSuccess (state, getters) {
     return getters.orderResponse && !getters.orderError
@@ -112,7 +112,7 @@ export const getters = {
     return state.user.stripe.paymentResponse
   },
   paymentError (state, getters) {
-    return getters.paymentResponse && (Number.isInteger(getters.paymentResponse.status) && getters.paymentResponse.status !== 200)
+    return getters.paymentResponse && (Number.isInteger(getters.paymentResponse.statusCode) && getters.paymentResponse.statusCode !== 200)
   },
   paymentSuccess (state, getters) {
     return getters.paymentResponse && !getters.paymentError
@@ -311,27 +311,29 @@ export const actions = {
     }
   },
 
-  async payOrder ({ commit, state }) {
+  async payOrder ({ commit, state, getters }) {
     commit('stripePaymentProcessing', true)
 
     try {
       const id = state.user.stripe.orderResponse.id
       const { token, error } = await createToken()
-      if (error) {
-        throw error
-      }
-      const response = await netlifyFunction('pay-order', { body: JSON.stringify({ id, token, error }), method: 'POST' })
 
-      $nuxt._router.push('/orders', () => {
-        commit('saveStripePaymentResponse', response)
-        commit('clearCart')
-      })
+      if (error) {
+        throw new Error({})
+      }
+
+      const response = await netlifyFunction('pay-order', { body: JSON.stringify({ id, token, error }), method: 'POST' })
+      commit('saveStripePaymentResponse', response)
+
+      if (!getters.paymentError) {
+        $nuxt._router.push('/orders', () => {
+          commit('clearCart')
+        })
+      }
     } catch (error) {
       if (error.response) {
         commit('saveStripePaymentResponse', error.response)
-        throw new Error(error.response)
       }
-      throw error
     } finally {
       commit('stripePaymentProcessing', false)
     }

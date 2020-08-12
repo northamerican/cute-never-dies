@@ -1,19 +1,19 @@
 <template>
-  <main v-if="paymentResponse">
+  <main>
     <section class="hero is-primary">
       <div class="hero-body">
         <div class="container">
           <h1 class="title">
             Orders
           </h1>
-          <h2 class="subtitle">
+          <h2 v-if="paymentResponse" class="subtitle">
             {{ orderHeader }} <span class="order-header-emoji">{{ orderEmoji }}</span>
           </h2>
         </div>
       </div>
     </section>
 
-    <section class="section">
+    <section v-if="paymentResponse" class="section">
       <div class="container">
         <div class="columns">
           <div class="column is-6">

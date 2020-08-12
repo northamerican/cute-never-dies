@@ -256,12 +256,12 @@
           <div class="column is-half">
             <div v-if="paymentError" class="message is-danger">
               <div class="message-body">
-                {{ paymentResponse.data.message }}
+                {{ paymentResponse.raw.message }}
               </div>
             </div>
             <div v-if="orderError" class="message is-danger">
               <div class="message-body">
-                {{ orderResponse.statusText }}
+                {{ orderResponse.raw.message }}
               </div>
             </div>
           </div>
