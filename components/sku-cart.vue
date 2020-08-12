@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 <template>
   <div class="sku-cart columns is-mobile is-multiline">
     <div class="column is-narrow">

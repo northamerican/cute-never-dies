@@ -26,24 +26,9 @@
         </nuxt-link>
       </div>
       <div class="navbar-end">
-        <div class="navbar-item dropdown is-hoverable is-hidden-mobile">
-          <div class="dropdown-trigger">
-            <span class="display-price">{{ user.currency }}</span>
-          </div>
-          <div class="dropdown-menu currency-menu" role="menu">
-            <div class="dropdown-content">
-              <a
-                v-for="(rate, currency) in currencies"
-                :key="currency"
-                :class="{ 'is-active': currencyIsActive(currency) }"
-                class="dropdown-item"
-                @click="setCurrency(currency)"
-              >
-                {{ currency }}
-              </a>
-            </div>
-          </div>
-        </div>
+        <currency-menu class="navbar-item is-hidden-mobile">
+          <span class="display-price">{{ user.currency }}</span>
+        </currency-menu>
         <nuxt-link :to="localePath('contact')" class="navbar-item">
           <!-- <span class="is-hidden-tablet is-block-mobile">📧</span> -->
           <span class="is-size-7-mobile">{{ $t('Contact') }}</span>
@@ -62,7 +47,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   props: {
@@ -74,8 +59,7 @@ export default {
   computed: {
     ...mapState([
       'user',
-      'siteName',
-      'currencies'
+      'siteName'
     ]),
     ...mapGetters([
       'skusInCartCount',
@@ -84,14 +68,6 @@ export default {
     otherLocales () {
       return this.$i18n.locales.filter(locale => locale.code !== this.$i18n.locale)
     }
-  },
-  methods: {
-    currencyIsActive (currency) {
-      return this.user.currency === currency
-    },
-    ...mapActions([
-      'setCurrency'
-    ])
   }
 }
 </script>

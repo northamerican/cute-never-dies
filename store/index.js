@@ -67,9 +67,10 @@ export const state = () => ({
   yearCreated,
   versionHash,
   baseCurrency,
-  currencies: {
-    [baseCurrency]: 1,
-    ...currencies.reduce((currencies, currency) => ({ [currency]: null, ...currencies }), {})
+  currencies,
+  hasCurrencyRates: false,
+  currencyRates: {
+    [baseCurrency]: 1
   },
   skus: [],
   user: { ...defaultUser },
@@ -123,7 +124,7 @@ export const getters = {
   },
 
   currencyRate (state) {
-    return state.currencies[state.user.currency]
+    return state.currencyRates[state.user.currency]
   }
 }
 
@@ -234,8 +235,9 @@ export const mutations = {
     state.user.stripe.paymentProcessing = isProcessing
   },
 
-  setCurrencyRate (state, { currencyCode, rate }) {
-    state.currencies[currencyCode] = rate
+  setCurrencyRates (state, rates) {
+    state.currencyRates = rates
+    state.hasCurrencyRates = true
   },
 
   setCurrency (state, currencyCode) {
@@ -250,7 +252,7 @@ export const actions = {
     commit('setItemCount', { sku, count })
   },
 
-  async nuxtClientInit ({ commit, dispatch, getters }) {
+  async nuxtClientInit ({ state, commit, dispatch, getters }) {
     if (getters.hasVersionChange) {
       commit('resetUser')
     }
@@ -260,7 +262,10 @@ export const actions = {
 
     commit('stripeOrderProcessing', false)
     commit('stripePaymentProcessing', false)
-    // dispatch('setCurrency', state.user.currency)
+
+    if (state.user.currency !== baseCurrency) {
+      await dispatch('getCurrencyRates')
+    }
 
     await dispatch('getSkus')
   },
@@ -269,6 +274,12 @@ export const actions = {
     const { data } = await netlifyFunction('get-skus')
 
     commit('populateSkus', data)
+  },
+
+  async getCurrencyRates ({ commit }) {
+    const response = await netlifyFunction('get-currency-rate')
+
+    commit('setCurrencyRates', response)
   },
 
   async getImages (_, { sku, url }) {
@@ -298,7 +309,10 @@ export const actions = {
     }
 
     try {
-      const response = await netlifyFunction('create-order', { body: JSON.stringify(orderData), method: 'POST' })
+      const response = await netlifyFunction('create-order', {
+        body: JSON.stringify(orderData),
+        method: 'POST'
+      })
       commit('saveStripeOrderResponse', response)
     } catch (error) {
       if (error.response) {
@@ -322,7 +336,10 @@ export const actions = {
         throw new Error({})
       }
 
-      const response = await netlifyFunction('pay-order', { body: JSON.stringify({ id, token, error }), method: 'POST' })
+      const response = await netlifyFunction('pay-order', {
+        body: JSON.stringify({ id, token, error }),
+        method: 'POST'
+      })
       commit('saveStripePaymentResponse', response)
 
       if (!getters.paymentError) {
@@ -347,7 +364,10 @@ export const actions = {
       }
 
       const id = state.user.stripe.paymentResponse.id
-      const response = await netlifyFunction('retrieve-order', { body: JSON.stringify({ id }), method: 'POST' })
+      const response = await netlifyFunction('retrieve-order', {
+        body: JSON.stringify({ id }),
+        method: 'POST'
+      })
 
       commit('saveStripePaymentResponse', response)
     } catch (error) {

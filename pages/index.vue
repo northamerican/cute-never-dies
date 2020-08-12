@@ -59,6 +59,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import { siteName } from '~/shop.public.config.js'
 
 export default {
   data: () => ({
@@ -83,7 +84,8 @@ export default {
     }
   },
   head: {
-    title: 'home'
+    title: 'home',
+    titleTemplate: siteName
   }
 }
 </script>
