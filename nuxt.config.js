@@ -54,10 +54,15 @@ export default {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
+      { name: 'description', content: 'Original mask designs made in Montreal. Made from machine cut, hand-shaped and assembled acrylic plastic.' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'apple-touch-icon', sizes: '76x76', href: '/apple-touch-icon.png' },
+      { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png' },
+      { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png' },
+      { rel: 'manifest', href: '/site.webmanifest' },
+      { rel: 'mask-icon', href: '/safari-pinned-tab.svg', color: '#ed0064' },
+      { rel: 'preconnect', href: 'https://fonts.googleapis.com/' }
     ]
   },
 
@@ -91,23 +96,11 @@ export default {
   */
   buildModules: [
     // Doc: https://github.com/nuxt-community/eslint-module
-    '@aceforth/nuxt-netlify',
+    // '@aceforth/nuxt-netlify',
     '@nuxtjs/eslint-module',
     '@nuxtjs/style-resources',
     'nuxt-purgecss'
   ],
-  netlify: {
-    mergeSecurityHeaders: true,
-    redirects: [
-      {
-        from: '/shop',
-        to: '/shop/:id',
-        query: {
-          id: ':id'
-        }
-      }
-    ]
-  },
   /*
   ** Nuxt.js modules
   */
@@ -136,7 +129,8 @@ export default {
       },
       defaultLocale: 'en',
       noPrefixDefaultLocale: true
-    }]
+    }],
+    'nuxt-webfontloader'
   ],
 
   styleResources: {
@@ -145,6 +139,7 @@ export default {
   css: [
     '~/assets/sass/bulma.sass'
   ],
+  loading: { color: '#ed0064' },
   /*
   ** Build configuration
   ** See https://nuxtjs.org/api/configuration-build/
@@ -161,6 +156,15 @@ export default {
       if (isServer) {
         createProductImageManifests()
       }
+    }
+  },
+
+  netlify: {
+  },
+
+  webfontloader: {
+    google: {
+      families: ['Rubik:400,400i,500']
     }
   }
 }
