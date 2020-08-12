@@ -12,12 +12,15 @@
     <section class="section">
       <div class="container">
         <div v-for="(imageList, skuId) in skuImages" :key="`${skuId}-${imageList[0]}`">
-          <!-- <h1 class="title">{{ skuId }}</h1> -->
           <div v-for="images in chunk(Object.values(imageList), imageList.length % 2 === 0 ? 2 : 3)" :key="images[0]" class="columns">
             <div v-for="image in images" :key="image" class="column">
               <nuxt-link :to="localePath(`/shop?sku=${skuId}`)" event="" @click.native="openSkuModal(getSkuById(skuId))">
                 <img-responsive
+                  :srcset="[660, 432]"
                   :src="image"
+                  :sizes="{
+                    desktop: images.length === 3 ? '33vw': '50vw'
+                  }"
                   min-height="100%"
                   position="50% 50%"
                 />

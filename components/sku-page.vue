@@ -66,15 +66,16 @@
         </div>
       </div>
     </div>
-    <div
-      v-for="image in images.slice(1, Infinity)"
-      :key="image"
-      class="gallery"
-    >
-      <img
-        :src="image"
-        :alt="sku.id"
+    <div class="gallery">
+      <template
+        v-for="image in images.slice(1, Infinity)"
       >
+        <img
+          :key="image"
+          :src="image"
+          :alt="null"
+        >
+      </template>
     </div>
     <hr>
     <div class="columns">

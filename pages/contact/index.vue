@@ -9,19 +9,6 @@
         </div>
       </div>
     </section>
-    <section class="hero is-white">
-      <div class="hero-body hero-body--hero-image">
-        <div class="container">
-          <img-responsive
-            src="hero-images/contact.jpg"
-            width="768"
-            alt=""
-            min-height="350"
-            position="30% 50%"
-          />
-        </div>
-      </div>
-    </section>
     <section class="section">
       <div class="container">
         <div class="columns has-text-centered-touch">
@@ -35,13 +22,27 @@
                 E-mail
               </h5>
               <a class="is-size-6" href="mailto:meow@cuteneverdies.com">meow@cuteneverdies.com</a>
+
               <h5 class="is-marginless">
-                Social media
+                <br>Social media
               </h5>
               <a class="is-size-6" href="https://www.facebook.com/cuteneverdies" target="_blank">Facebook</a> •
               <a class="is-size-6" href="https://www.instagram.com/cuteneverdies" target="_blank">Instagram</a><br>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+    <section class="hero is-white">
+      <div class="hero-body hero-body--hero-image">
+        <div class="container">
+          <img
+            src="hero-images/contact.jpg"
+            width="768"
+            alt=""
+            min-height="350"
+            position="30% 50%"
+          >
         </div>
       </div>
     </section>

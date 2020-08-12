@@ -3,12 +3,12 @@
     <section class="hero">
       <div class="hero-body hero-body--hero-image">
         <div class="container">
-          <img-responsive
+          <img
             src="hero-images/home.jpg"
             width="1344"
             alt="cute never dies"
             position="30% 50%"
-          />
+          >
         </div>
       </div>
     </section>
