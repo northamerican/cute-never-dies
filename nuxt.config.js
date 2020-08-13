@@ -5,7 +5,6 @@ import en from './locales/en.json'
 // import fr from './locales/fr.json'
 
 const isDev = process.env.NODE_ENV !== 'production'
-const prodUrl = ''
 
 // In each product images directory,
 // create a json file with a list of image file names
@@ -67,7 +66,7 @@ export default {
   },
 
   publicRuntimeConfig: {
-    url: isDev ? 'http://localhost:3000' : prodUrl,
+    url: isDev ? 'http://localhost:3000' : '',
     // NETLIFY_FUNCTIONS_BASE_URL: process.env.NETLIFY_FUNCTIONS_BASE_URL,
     // STRIPE_API_VERSION: process.env.STRIPE_API_VERSION,
     STRIPE_IS_LIVE_MODE: process.env.STRIPE_IS_LIVE_MODE,
