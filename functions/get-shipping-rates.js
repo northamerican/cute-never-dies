@@ -9,6 +9,7 @@ const headers = {
   'Access-Control-Allow-Origin': '*'
 }
 
+// eslint-disable-next-line require-await
 exports.handler = async ({ body }) => {
   const jsonBody = JSON.parse(body)
   const { country } = jsonBody.order.shipping.address
