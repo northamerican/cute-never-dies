@@ -24,7 +24,7 @@
           </nuxt-link>
         </p>
         <p class="subtitle is-6">
-          <price-format :price="sku.price" :show-base-currency="true" />
+          <price-format :price="sku.price" :show-base-currency="true" :currency-dropdown="true" />
         </p>
       </div>
     </div>
