@@ -46,13 +46,13 @@ const defaultUser = {
   }
 }
 
+const isDev = process.env.NODE_ENV !== 'production'
+
 const netlifyFunctionsBaseUrl = '.netlify/functions'
-const baseUrl = process.env.NODE_ENV === 'development'
-  ? `http://localhost:8888/${netlifyFunctionsBaseUrl}`
-  : `https://cuteneverdies.netlify.app/${netlifyFunctionsBaseUrl}`
+const baseUrl = isDev ? 'http://localhost:8888' : ''
 
 const netlifyFunction = async (methodName, options = {}) => {
-  const response = await fetch(`${baseUrl}/${methodName}`, options)
+  const response = await fetch(`${baseUrl}/${netlifyFunctionsBaseUrl}/${methodName}`, options)
   return await response.json()
 }
 
