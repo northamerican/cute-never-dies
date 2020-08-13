@@ -1,3 +1,6 @@
+// Configured in https://dashboard.stripe.com/settings/orders
+// ! Deprecated - https://stripe.com/docs/orders/dynamic-shipping-taxes
+
 const baseCurrency = 'CAD'
 const freeShippingCountries = ['CA', 'US']
 // const freeShippingCountries = process.env.FREE_SHIPPING_COUNTRIES.split(',')
