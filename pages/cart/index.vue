@@ -216,7 +216,7 @@
               <div class="column is-8 has-text-weight-bold">
                 Order total
               </div>
-              <div class="column is-4 has-text-right">
+              <div class="column is-4 has-text-right has-text-weight-bold">
                 <price-format :price="orderResponse.amount" :show-base-currency="true" />
               </div>
             </div>
