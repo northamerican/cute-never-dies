@@ -13,7 +13,6 @@ const headers = {
 
 exports.handler = async ({ body }) => {
   const { id, token, error } = JSON.parse(body)
-  // const { id, token } = JSON.parse(body)
 
   if (error) {
     return {

@@ -11,7 +11,7 @@
         <!-- <a class="navbar-item" href="https://www.facebook.com/cuteneverdies" target="_blank">
           FB
         </a>
-        <a class="navbar-item" href="https://www.facebook.com/cuteneverdies" target="_blank">
+        <a class="navbar-item" href="https://www.instagram.com/cuteneverdies" target="_blank">
           IG
         </a> -->
       </div>

@@ -20,17 +20,7 @@ export default {
     ...mapMutations([
       'dismissSkuModal'
     ])
-    // handleScroll(event) {
-    //   if (hasScrolledSomeDistance)
-    //   this.dismissSkuModal
-    // }
   }
-  // created() {
-  //   window.addEventListener('scroll', this.handleScroll)
-  // },
-  // destroyed() {
-  //   window.removeEventListener('scroll', this.handleScroll)
-  // },
 }
 </script>
 

@@ -1,23 +1,5 @@
 <template>
   <client-only>
-    <!-- <div v-if="currencyDropdown" class="dropdown is-hoverable">
-      <div class="dropdown-trigger">
-        {{ baseCurrencyIsActive ? displayPrice(price) : '' }} ({{ basePrice(price) }})
-      </div>
-      <div class="dropdown-menu currency-menu" role="menu">
-        <div class="dropdown-content">
-          <a
-            v-for="currency in currencies"
-            :key="currency"
-            :class="{ 'is-active': currencyIsActive(currency) }"
-            class="dropdown-item"
-            @click="setCurrency(currency)"
-          >
-            {{ currency }}
-          </a>
-        </div>
-      </div>
-    </div> -->
     <currency-menu v-if="currencyDropdown">
       <span
         v-if="baseCurrencyIsActive"

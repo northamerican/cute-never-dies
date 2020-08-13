@@ -8,20 +8,16 @@
       </div>
       <div class="navbar-start is-shadowless">
         <nuxt-link :to="localePath('gallery')" class="navbar-item">
-          <!-- <span class="is-hidden-tablet is-block-mobile">🖼</span> -->
           <span class="is-size-7-mobile">{{ $t('Gallery') }}</span>
         </nuxt-link>
         <nuxt-link :to="localePath('shop')" class="navbar-item">
-          <!-- <span class="is-hidden-tablet is-block-mobile">🛍</span> -->
           <span class="is-size-7-mobile">{{ $t('Shop') }}</span>
         </nuxt-link>
         <nuxt-link :to="localePath('cart')" class="navbar-item">
-          <!-- <span class="is-hidden-tablet is-block-mobile">🛒</span> -->
           <span class="is-size-7-mobile">{{ $t('Cart') }}</span>
           <span :class="{ skusInCartCount }" class="tag is-primary in-cart-tag is-hidden-mobile">{{ skusInCartCount || '' }}</span>
         </nuxt-link>
         <nuxt-link v-if="paymentSuccess" :to="localePath('orders')" class="navbar-item">
-          <!-- <span class="is-hidden-tablet is-block-mobile">📦</span> -->
           <span class="is-size-7-mobile">{{ $t('Orders') }}</span>
         </nuxt-link>
       </div>
@@ -30,7 +26,6 @@
           <span class="display-price">{{ user.currency }}</span>
         </currency-menu>
         <nuxt-link :to="localePath('contact')" class="navbar-item">
-          <!-- <span class="is-hidden-tablet is-block-mobile">📧</span> -->
           <span class="is-size-7-mobile">{{ $t('Contact') }}</span>
         </nuxt-link>
         <!-- <nuxt-link
@@ -74,44 +69,44 @@ export default {
 
 <style scoped lang="sass">
   .navbar
-    position: static;
-    top: 0;
-    width: 100vw;
+    position: static
+    top: 0
+    width: 100vw
     +tablet
-      position: fixed;
+      position: fixed
 
     .container
-      display: flex;
+      display: flex
 
     &.is-black .navbar-item
-      color: white;
+      color: white
       &:hover
-        color: $link;
+        color: $link
 
     .navbar-logo
-      width: 42px;
+      width: 42px
 
     &.is-black .navbar-logo
-      filter: invert(1);
+      filter: invert(1)
 
     .in-cart-tag
-      transition-property: all;
-      transition-duration: 150ms;
-      transition-timing-function: ease-in-out;
+      transition-property: all
+      transition-duration: 150ms
+      transition-timing-function: ease-in-out
 
       &:empty
-        opacity: 0;
-        transform: scale(0);
-        margin-left: 0;
-        min-width: 0;
-        height: 0;
-        padding: 0;
+        opacity: 0
+        transform: scale(0)
+        margin-left: 0
+        min-width: 0
+        height: 0
+        padding: 0
 
       &.skusInCartCount
-        opacity: 1;
-        transform: scale(1);
-        min-width: 24px;
-        margin-left: 0.75em;
+        opacity: 1
+        transform: scale(1)
+        min-width: 24px
+        margin-left: 0.75em
 
   .navbar,
   .navbar-start,
