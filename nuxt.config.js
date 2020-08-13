@@ -138,7 +138,8 @@ export default {
   css: [
     '~/assets/sass/bulma.sass'
   ],
-  loading: { color: '#ed0064' },
+  // loading: { color: '#ed0064' },
+  loading: false,
   /*
   ** Build configuration
   ** See https://nuxtjs.org/api/configuration-build/
