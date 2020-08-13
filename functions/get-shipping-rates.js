@@ -5,6 +5,10 @@
 // const freeShippingCountries = ['CA', 'US']
 // const freeShippingCountries = process.env.FREE_SHIPPING_COUNTRIES.split(',')
 
+const headers = {
+  'Access-Control-Allow-Origin': '*'
+}
+
 exports.handler = ({ body }) => {
   // const jsonBody = JSON.parse(body)
   // const { country } = jsonBody.order.shipping.address
@@ -44,6 +48,7 @@ exports.handler = ({ body }) => {
 
   return {
     statusCode: 200,
-    body: JSON.stringify({a:1})
+    body: JSON.stringify({ a: 1 }),
+    headers
   }
 }
