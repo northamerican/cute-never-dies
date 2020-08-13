@@ -49,7 +49,7 @@ const defaultUser = {
 const netlifyFunctionsBaseUrl = '.netlify/functions'
 const baseUrl = process.env.NODE_ENV === 'development'
   ? `http://localhost:8888/${netlifyFunctionsBaseUrl}`
-  : `https://cuteneverdies.com/${netlifyFunctionsBaseUrl}`
+  : `https://cuteneverdies.netlify.app/${netlifyFunctionsBaseUrl}`
 
 const netlifyFunction = async (methodName, options = {}) => {
   const response = await fetch(`${baseUrl}/${methodName}`, options)
