@@ -5,7 +5,7 @@ import en from './locales/en.json'
 // import fr from './locales/fr.json'
 
 const isDev = process.env.NODE_ENV !== 'production'
-const prodUrl = 'https://cuteneverdies.netlify.app'
+const prodUrl = 'https://cuteneverdies.com'
 
 // In each product images directory,
 // create a json file with a list of image file names
