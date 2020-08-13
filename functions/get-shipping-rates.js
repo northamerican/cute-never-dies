@@ -1,49 +1,22 @@
-// Configured in https://dashboard.stripe.com/settings/orders
-// ! Deprecated - https://stripe.com/docs/orders/dynamic-shipping-taxes
+const secretKey = process.env.STRIPE_IS_LIVE_MODE === 'true'
+  ? process.env.STRIPE_SECRET_KEY_LIVE
+  : process.env.STRIPE_SECRET_KEY_TEST
 
-const baseCurrency = 'CAD'
-const freeShippingCountries = ['CA', 'US']
-// const freeShippingCountries = process.env.FREE_SHIPPING_COUNTRIES.split(',')
+const stripe = require('stripe')(secretKey, {
+  apiVersion: process.env.STRIPE_API_VERSION,
+  maxNetworkRetries: 2
+})
 
-exports.handler = ({ body }) => {
-  // const jsonBody = JSON.parse(body)
-  // const { country } = jsonBody.order.shipping.address
-  // const isFreeShipping = freeShippingCountries.includes(country)
+const headers = {
+  'Access-Control-Allow-Origin': '*'
+}
 
-  // const tax = {
-  //   parent: null,
-  //   type: 'tax',
-  //   description: 'Taxes (included)',
-  //   amount: 0,
-  //   currency: baseCurrency.toLowerCase()
-  // }
-  // const shippingMethod = isFreeShipping ? {
-  //   id: 'free_shipping',
-  //   description: 'Free shipping',
-  //   amount: 0,
-  //   currency: baseCurrency.toLowerCase(),
-  //   tax_items: []
-  // } : {
-  //   id: 'intl_shipping',
-  //   description: 'International shipping',
-  //   amount: 3800,
-  //   currency: baseCurrency.toLowerCase(),
-  //   tax_items: []
-  // }
-
-  // const response = {
-  //   order_update: {
-  //     items: [
-  //       tax
-  //     ],
-  //     shipping_methods: [
-  //       shippingMethod
-  //     ]
-  //   }
-  // }
+exports.handler = async () => {
+  const products = await stripe.skus.list({ active: true })
 
   return {
     statusCode: 200,
-    body: '{"a": 1}'
+    body: JSON.stringify(products),
+    headers
   }
 }
