@@ -24,7 +24,8 @@ export default {
   },
   head: {
     title: 'page not found'
-  }
+  },
+  scrollToTop: true
 }
 </script>
 
