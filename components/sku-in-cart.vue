@@ -23,7 +23,7 @@
       </div>
     </div>
     <div v-else>
-      <a class="button is-light is-static">Not available</a>
+      <a class="button is-light is-static">Sold out</a>
     </div>
   </div>
 </template>

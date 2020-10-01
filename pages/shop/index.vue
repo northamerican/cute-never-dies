@@ -27,7 +27,7 @@
             {{ product.caption }}
           </h2> -->
           <div class="columns is-multiline">
-            <article v-for="sku in skus" :key="sku.id" class="column is-one-third-desktop is-half-tablet">
+            <article v-for="sku in skusByInventory" :key="sku.id" class="column is-one-third-desktop is-half-tablet">
               <sku-tile :sku="sku" />
             </article>
           </div>
@@ -48,6 +48,7 @@
 </template>
 
 <script>
+import { sortBy } from 'lodash'
 import { mapState } from 'vuex'
 
 export default {
@@ -60,7 +61,13 @@ export default {
   computed: {
     ...mapState([
       'skus'
-    ])
+    ]),
+
+    skusByInventory () {
+      return sortBy(this.skus, sku =>
+        -sku.inventory.quantity
+      )
+    }
   },
   methods: {
     getSkuById (id) {
